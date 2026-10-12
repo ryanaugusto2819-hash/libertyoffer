@@ -8,3 +8,8 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- DR Control uses TanStack file routes and reusable feature components, with protected module pages under the managed authenticated layout; this keeps private navigation gated.
+- Business writes use validated authenticated server functions or transactional database RPCs with role checks; client state never grants privileges.
+- Authentication is invitation-only; initial administrator assignment is an explicit trusted provisioning operation, never first-user signup or editable metadata.
+- Files use a private Cloud bucket with entity-aware access policies and signed preview/download URLs; demand item versions are append-only.
