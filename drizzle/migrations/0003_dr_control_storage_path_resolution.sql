@@ -1,0 +1,2 @@
+ALTER POLICY dr_storage_read ON storage.objects USING(bucket_id='dr-files' AND EXISTS(SELECT 1 FROM public.files f WHERE f.path=storage.objects.name AND public.can_access_file(f.offer_id,f.demand_id,f.item_id)));
+ALTER POLICY dr_storage_insert ON storage.objects WITH CHECK(bucket_id='dr-files' AND EXISTS(SELECT 1 FROM public.files f WHERE f.path=storage.objects.name AND f.uploaded_by=auth.uid() AND (public.has_role(auth.uid(),'admin') OR (public.has_role(auth.uid(),'editor') AND f.item_id IS NOT NULL AND public.can_access_file(NULL,NULL,f.item_id)))));

@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791820883750,
+      "tag": "0000_dr_control_phase_one",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791820944841,
+      "tag": "0001_dr_control_transactional_role_versions",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791821298283,
+      "tag": "0002_dr_control_restrict_helper_access",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791821311609,
+      "tag": "0003_dr_control_storage_path_resolution",
+      "breakpoints": true
+    }
+  ]
+}

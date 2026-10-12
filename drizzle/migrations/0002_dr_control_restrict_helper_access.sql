@@ -1,0 +1,6 @@
+REVOKE ALL ON FUNCTION public.has_role(uuid,public.app_role), public.is_member(), public.can_read_demand(uuid), public.can_access_file(uuid,uuid,uuid) FROM PUBLIC,anon;
+GRANT EXECUTE ON FUNCTION public.has_role(uuid,public.app_role), public.is_member(), public.can_read_demand(uuid), public.can_access_file(uuid,uuid,uuid) TO authenticated,service_role;
+REVOKE ALL ON FUNCTION public.on_dr_user_created(), public.log_dr_change(), public.validate_item_update(), public.validate_item_insert(), public.validate_file_metadata() FROM PUBLIC,anon,authenticated;
+CREATE FUNCTION public.validate_item_assignment() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ BEGIN IF new.assigned_to IS NOT NULL AND NOT public.has_role(new.assigned_to,'editor') THEN RAISE EXCEPTION 'O responsável deve possuir a função Editor'; END IF; RETURN new; END $$;
+REVOKE ALL ON FUNCTION public.validate_item_assignment() FROM PUBLIC,anon,authenticated;
+CREATE TRIGGER validate_item_assignment_update BEFORE UPDATE OF assigned_to ON public.demand_items FOR EACH ROW EXECUTE FUNCTION public.validate_item_assignment();
