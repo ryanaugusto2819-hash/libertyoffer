@@ -1,0 +1,1 @@
+export function drHead(title:string,description:string){return {meta:[{title:`${title} · DR Control`},{name:'description',content:description},{property:'og:title',content:`${title} · DR Control`},{property:'og:description',content:description},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]};}
