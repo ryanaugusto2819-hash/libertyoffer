@@ -15,6 +15,13 @@
       "when": 1791820944841,
       "tag": "0001_dr_control_transactional_role_versions",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791821298283,
+      "tag": "0002_dr_control_restrict_helper_access",
+      "breakpoints": true
     }
   ]
 }
