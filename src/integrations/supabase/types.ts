@@ -495,6 +495,10 @@ export type Database = {
     }
     Functions: {
       accept_team_invitation: { Args: never; Returns: undefined }
+      append_creative_version: {
+        Args: { target_file: string; target_item: string }
+        Returns: string
+      }
       can_access_file: {
         Args: { _demand: string; _item: string; _offer: string }
         Returns: boolean
@@ -509,6 +513,13 @@ export type Database = {
         Returns: boolean
       }
       is_member: { Args: never; Returns: boolean }
+      set_member_roles: {
+        Args: {
+          new_roles: Database["public"]["Enums"]["app_role"][]
+          target: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "editor" | "spy" | "traffic"
