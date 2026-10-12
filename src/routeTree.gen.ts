@@ -24,7 +24,9 @@ import { Route as AuthenticatedPerformanceRouteImport } from './routes/_authenti
 import { Route as AuthenticatedProducaoRouteImport } from './routes/_authenticated/producao'
 import { Route as AuthenticatedPublicacaoRouteImport } from './routes/_authenticated/publicacao'
 import { Route as AuthenticatedSpyRouteImport } from './routes/_authenticated/spy'
+import { Route as AuthenticatedDemandasIndexRouteImport } from './routes/_authenticated/demandas.index'
 import { Route as AuthenticatedDemandasIdRouteImport } from './routes/_authenticated/demandas.$id'
+import { Route as AuthenticatedOfertasIndexRouteImport } from './routes/_authenticated/ofertas.index'
 import { Route as AuthenticatedOfertasIdRouteImport } from './routes/_authenticated/ofertas.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -103,11 +105,23 @@ const AuthenticatedSpyRoute = AuthenticatedSpyRouteImport.update({
   path: '/spy',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDemandasIndexRoute =
+  AuthenticatedDemandasIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDemandasRoute,
+  } as any)
 const AuthenticatedDemandasIdRoute = AuthenticatedDemandasIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AuthenticatedDemandasRoute,
 } as any)
+const AuthenticatedOfertasIndexRoute =
+  AuthenticatedOfertasIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedOfertasRoute,
+  } as any)
 const AuthenticatedOfertasIdRoute = AuthenticatedOfertasIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -131,6 +145,8 @@ export interface FileRoutesByFullPath {
   '/spy': typeof AuthenticatedSpyRoute
   '/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/ofertas/$id': typeof AuthenticatedOfertasIdRoute
+  '/demandas/': typeof AuthenticatedDemandasIndexRoute
+  '/ofertas/': typeof AuthenticatedOfertasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -140,15 +156,15 @@ export interface FileRoutesByTo {
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/criativos': typeof AuthenticatedCriativosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/demandas': typeof AuthenticatedDemandasRouteWithChildren
   '/equipe': typeof AuthenticatedEquipeRoute
-  '/ofertas': typeof AuthenticatedOfertasRouteWithChildren
   '/performance': typeof AuthenticatedPerformanceRoute
   '/producao': typeof AuthenticatedProducaoRoute
   '/publicacao': typeof AuthenticatedPublicacaoRoute
   '/spy': typeof AuthenticatedSpyRoute
   '/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/ofertas/$id': typeof AuthenticatedOfertasIdRoute
+  '/demandas': typeof AuthenticatedDemandasIndexRoute
+  '/ofertas': typeof AuthenticatedOfertasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -169,6 +185,8 @@ export interface FileRoutesById {
   '/_authenticated/spy': typeof AuthenticatedSpyRoute
   '/_authenticated/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/_authenticated/ofertas/$id': typeof AuthenticatedOfertasIdRoute
+  '/_authenticated/demandas/': typeof AuthenticatedDemandasIndexRoute
+  '/_authenticated/ofertas/': typeof AuthenticatedOfertasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -189,6 +207,8 @@ export interface FileRouteTypes {
     | '/spy'
     | '/demandas/$id'
     | '/ofertas/$id'
+    | '/demandas/'
+    | '/ofertas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -198,15 +218,15 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/criativos'
     | '/dashboard'
-    | '/demandas'
     | '/equipe'
-    | '/ofertas'
     | '/performance'
     | '/producao'
     | '/publicacao'
     | '/spy'
     | '/demandas/$id'
     | '/ofertas/$id'
+    | '/demandas'
+    | '/ofertas'
   id:
     | '__root__'
     | '/'
@@ -226,6 +246,8 @@ export interface FileRouteTypes {
     | '/_authenticated/spy'
     | '/_authenticated/demandas/$id'
     | '/_authenticated/ofertas/$id'
+    | '/_authenticated/demandas/'
+    | '/_authenticated/ofertas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -342,12 +364,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSpyRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/demandas/': {
+      id: '/_authenticated/demandas/'
+      path: '/'
+      fullPath: '/demandas/'
+      preLoaderRoute: typeof AuthenticatedDemandasIndexRouteImport
+      parentRoute: typeof AuthenticatedDemandasRoute
+    }
     '/_authenticated/demandas/$id': {
       id: '/_authenticated/demandas/$id'
       path: '/$id'
       fullPath: '/demandas/$id'
       preLoaderRoute: typeof AuthenticatedDemandasIdRouteImport
       parentRoute: typeof AuthenticatedDemandasRoute
+    }
+    '/_authenticated/ofertas/': {
+      id: '/_authenticated/ofertas/'
+      path: '/'
+      fullPath: '/ofertas/'
+      preLoaderRoute: typeof AuthenticatedOfertasIndexRouteImport
+      parentRoute: typeof AuthenticatedOfertasRoute
     }
     '/_authenticated/ofertas/$id': {
       id: '/_authenticated/ofertas/$id'
@@ -361,10 +397,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedDemandasRouteChildren {
   AuthenticatedDemandasIdRoute: typeof AuthenticatedDemandasIdRoute
+  AuthenticatedDemandasIndexRoute: typeof AuthenticatedDemandasIndexRoute
 }
 
 const AuthenticatedDemandasRouteChildren: AuthenticatedDemandasRouteChildren = {
   AuthenticatedDemandasIdRoute: AuthenticatedDemandasIdRoute,
+  AuthenticatedDemandasIndexRoute: AuthenticatedDemandasIndexRoute,
 }
 
 const AuthenticatedDemandasRouteWithChildren =
@@ -374,10 +412,12 @@ const AuthenticatedDemandasRouteWithChildren =
 
 interface AuthenticatedOfertasRouteChildren {
   AuthenticatedOfertasIdRoute: typeof AuthenticatedOfertasIdRoute
+  AuthenticatedOfertasIndexRoute: typeof AuthenticatedOfertasIndexRoute
 }
 
 const AuthenticatedOfertasRouteChildren: AuthenticatedOfertasRouteChildren = {
   AuthenticatedOfertasIdRoute: AuthenticatedOfertasIdRoute,
+  AuthenticatedOfertasIndexRoute: AuthenticatedOfertasIndexRoute,
 }
 
 const AuthenticatedOfertasRouteWithChildren =
