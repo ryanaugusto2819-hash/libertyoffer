@@ -10,33 +10,229 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedAprovacoesRouteImport } from './routes/_authenticated/aprovacoes'
+import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
+import { Route as AuthenticatedCriativosRouteImport } from './routes/_authenticated/criativos'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDemandasRouteImport } from './routes/_authenticated/demandas'
+import { Route as AuthenticatedEquipeRouteImport } from './routes/_authenticated/equipe'
+import { Route as AuthenticatedOfertasRouteImport } from './routes/_authenticated/ofertas'
+import { Route as AuthenticatedPerformanceRouteImport } from './routes/_authenticated/performance'
+import { Route as AuthenticatedProducaoRouteImport } from './routes/_authenticated/producao'
+import { Route as AuthenticatedPublicacaoRouteImport } from './routes/_authenticated/publicacao'
+import { Route as AuthenticatedSpyRouteImport } from './routes/_authenticated/spy'
+import { Route as AuthenticatedDemandasIdRouteImport } from './routes/_authenticated/demandas.$id'
+import { Route as AuthenticatedOfertasIdRouteImport } from './routes/_authenticated/ofertas.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAprovacoesRoute = AuthenticatedAprovacoesRouteImport.update({
+  id: '/aprovacoes',
+  path: '/aprovacoes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedConfiguracoesRoute =
+  AuthenticatedConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCriativosRoute = AuthenticatedCriativosRouteImport.update({
+  id: '/criativos',
+  path: '/criativos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDemandasRoute = AuthenticatedDemandasRouteImport.update({
+  id: '/demandas',
+  path: '/demandas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedEquipeRoute = AuthenticatedEquipeRouteImport.update({
+  id: '/equipe',
+  path: '/equipe',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOfertasRoute = AuthenticatedOfertasRouteImport.update({
+  id: '/ofertas',
+  path: '/ofertas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPerformanceRoute =
+  AuthenticatedPerformanceRouteImport.update({
+    id: '/performance',
+    path: '/performance',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProducaoRoute = AuthenticatedProducaoRouteImport.update({
+  id: '/producao',
+  path: '/producao',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPublicacaoRoute = AuthenticatedPublicacaoRouteImport.update({
+  id: '/publicacao',
+  path: '/publicacao',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSpyRoute = AuthenticatedSpyRouteImport.update({
+  id: '/spy',
+  path: '/spy',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDemandasIdRoute = AuthenticatedDemandasIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedDemandasRoute,
+} as any)
+const AuthenticatedOfertasIdRoute = AuthenticatedOfertasIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedOfertasRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/aprovacoes': typeof AuthenticatedAprovacoesRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/criativos': typeof AuthenticatedCriativosRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/demandas': typeof AuthenticatedDemandasRouteWithChildren
+  '/equipe': typeof AuthenticatedEquipeRoute
+  '/ofertas': typeof AuthenticatedOfertasRouteWithChildren
+  '/performance': typeof AuthenticatedPerformanceRoute
+  '/producao': typeof AuthenticatedProducaoRoute
+  '/publicacao': typeof AuthenticatedPublicacaoRoute
+  '/spy': typeof AuthenticatedSpyRoute
+  '/demandas/$id': typeof AuthenticatedDemandasIdRoute
+  '/ofertas/$id': typeof AuthenticatedOfertasIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/aprovacoes': typeof AuthenticatedAprovacoesRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/criativos': typeof AuthenticatedCriativosRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/demandas': typeof AuthenticatedDemandasRouteWithChildren
+  '/equipe': typeof AuthenticatedEquipeRoute
+  '/ofertas': typeof AuthenticatedOfertasRouteWithChildren
+  '/performance': typeof AuthenticatedPerformanceRoute
+  '/producao': typeof AuthenticatedProducaoRoute
+  '/publicacao': typeof AuthenticatedPublicacaoRoute
+  '/spy': typeof AuthenticatedSpyRoute
+  '/demandas/$id': typeof AuthenticatedDemandasIdRoute
+  '/ofertas/$id': typeof AuthenticatedOfertasIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/aprovacoes': typeof AuthenticatedAprovacoesRoute
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/_authenticated/criativos': typeof AuthenticatedCriativosRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/demandas': typeof AuthenticatedDemandasRouteWithChildren
+  '/_authenticated/equipe': typeof AuthenticatedEquipeRoute
+  '/_authenticated/ofertas': typeof AuthenticatedOfertasRouteWithChildren
+  '/_authenticated/performance': typeof AuthenticatedPerformanceRoute
+  '/_authenticated/producao': typeof AuthenticatedProducaoRoute
+  '/_authenticated/publicacao': typeof AuthenticatedPublicacaoRoute
+  '/_authenticated/spy': typeof AuthenticatedSpyRoute
+  '/_authenticated/demandas/$id': typeof AuthenticatedDemandasIdRoute
+  '/_authenticated/ofertas/$id': typeof AuthenticatedOfertasIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/aprovacoes'
+    | '/configuracoes'
+    | '/criativos'
+    | '/dashboard'
+    | '/demandas'
+    | '/equipe'
+    | '/ofertas'
+    | '/performance'
+    | '/producao'
+    | '/publicacao'
+    | '/spy'
+    | '/demandas/$id'
+    | '/ofertas/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/aprovacoes'
+    | '/configuracoes'
+    | '/criativos'
+    | '/dashboard'
+    | '/demandas'
+    | '/equipe'
+    | '/ofertas'
+    | '/performance'
+    | '/producao'
+    | '/publicacao'
+    | '/spy'
+    | '/demandas/$id'
+    | '/ofertas/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/aprovacoes'
+    | '/_authenticated/configuracoes'
+    | '/_authenticated/criativos'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/demandas'
+    | '/_authenticated/equipe'
+    | '/_authenticated/ofertas'
+    | '/_authenticated/performance'
+    | '/_authenticated/producao'
+    | '/_authenticated/publicacao'
+    | '/_authenticated/spy'
+    | '/_authenticated/demandas/$id'
+    | '/_authenticated/ofertas/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +244,181 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/aprovacoes': {
+      id: '/_authenticated/aprovacoes'
+      path: '/aprovacoes'
+      fullPath: '/aprovacoes'
+      preLoaderRoute: typeof AuthenticatedAprovacoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configuracoes': {
+      id: '/_authenticated/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/criativos': {
+      id: '/_authenticated/criativos'
+      path: '/criativos'
+      fullPath: '/criativos'
+      preLoaderRoute: typeof AuthenticatedCriativosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/demandas': {
+      id: '/_authenticated/demandas'
+      path: '/demandas'
+      fullPath: '/demandas'
+      preLoaderRoute: typeof AuthenticatedDemandasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/equipe': {
+      id: '/_authenticated/equipe'
+      path: '/equipe'
+      fullPath: '/equipe'
+      preLoaderRoute: typeof AuthenticatedEquipeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ofertas': {
+      id: '/_authenticated/ofertas'
+      path: '/ofertas'
+      fullPath: '/ofertas'
+      preLoaderRoute: typeof AuthenticatedOfertasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/performance': {
+      id: '/_authenticated/performance'
+      path: '/performance'
+      fullPath: '/performance'
+      preLoaderRoute: typeof AuthenticatedPerformanceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/producao': {
+      id: '/_authenticated/producao'
+      path: '/producao'
+      fullPath: '/producao'
+      preLoaderRoute: typeof AuthenticatedProducaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/publicacao': {
+      id: '/_authenticated/publicacao'
+      path: '/publicacao'
+      fullPath: '/publicacao'
+      preLoaderRoute: typeof AuthenticatedPublicacaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/spy': {
+      id: '/_authenticated/spy'
+      path: '/spy'
+      fullPath: '/spy'
+      preLoaderRoute: typeof AuthenticatedSpyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/demandas/$id': {
+      id: '/_authenticated/demandas/$id'
+      path: '/$id'
+      fullPath: '/demandas/$id'
+      preLoaderRoute: typeof AuthenticatedDemandasIdRouteImport
+      parentRoute: typeof AuthenticatedDemandasRoute
+    }
+    '/_authenticated/ofertas/$id': {
+      id: '/_authenticated/ofertas/$id'
+      path: '/$id'
+      fullPath: '/ofertas/$id'
+      preLoaderRoute: typeof AuthenticatedOfertasIdRouteImport
+      parentRoute: typeof AuthenticatedOfertasRoute
+    }
   }
 }
 
+interface AuthenticatedDemandasRouteChildren {
+  AuthenticatedDemandasIdRoute: typeof AuthenticatedDemandasIdRoute
+}
+
+const AuthenticatedDemandasRouteChildren: AuthenticatedDemandasRouteChildren = {
+  AuthenticatedDemandasIdRoute: AuthenticatedDemandasIdRoute,
+}
+
+const AuthenticatedDemandasRouteWithChildren =
+  AuthenticatedDemandasRoute._addFileChildren(
+    AuthenticatedDemandasRouteChildren,
+  )
+
+interface AuthenticatedOfertasRouteChildren {
+  AuthenticatedOfertasIdRoute: typeof AuthenticatedOfertasIdRoute
+}
+
+const AuthenticatedOfertasRouteChildren: AuthenticatedOfertasRouteChildren = {
+  AuthenticatedOfertasIdRoute: AuthenticatedOfertasIdRoute,
+}
+
+const AuthenticatedOfertasRouteWithChildren =
+  AuthenticatedOfertasRoute._addFileChildren(AuthenticatedOfertasRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAprovacoesRoute: typeof AuthenticatedAprovacoesRoute
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
+  AuthenticatedCriativosRoute: typeof AuthenticatedCriativosRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDemandasRoute: typeof AuthenticatedDemandasRouteWithChildren
+  AuthenticatedEquipeRoute: typeof AuthenticatedEquipeRoute
+  AuthenticatedOfertasRoute: typeof AuthenticatedOfertasRouteWithChildren
+  AuthenticatedPerformanceRoute: typeof AuthenticatedPerformanceRoute
+  AuthenticatedProducaoRoute: typeof AuthenticatedProducaoRoute
+  AuthenticatedPublicacaoRoute: typeof AuthenticatedPublicacaoRoute
+  AuthenticatedSpyRoute: typeof AuthenticatedSpyRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAprovacoesRoute: AuthenticatedAprovacoesRoute,
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
+  AuthenticatedCriativosRoute: AuthenticatedCriativosRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDemandasRoute: AuthenticatedDemandasRouteWithChildren,
+  AuthenticatedEquipeRoute: AuthenticatedEquipeRoute,
+  AuthenticatedOfertasRoute: AuthenticatedOfertasRouteWithChildren,
+  AuthenticatedPerformanceRoute: AuthenticatedPerformanceRoute,
+  AuthenticatedProducaoRoute: AuthenticatedProducaoRoute,
+  AuthenticatedPublicacaoRoute: AuthenticatedPublicacaoRoute,
+  AuthenticatedSpyRoute: AuthenticatedSpyRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
