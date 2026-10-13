@@ -1,0 +1,1 @@
+COMMENT ON COLUMN public.demand_items.reference_url IS 'DEPRECATED: substituído por anexo de vídeo em files (purpose=reference)';
