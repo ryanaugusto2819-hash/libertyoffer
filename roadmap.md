@@ -1,5 +1,5 @@
 # LibertyOffer
-- [ ] Simplify SPY ad reference fields, show video playback, and automatically persist AI video transcriptions with private access.
+- [x] Simplify SPY ad reference fields, show video playback, and automatically persist private AI video transcriptions; verified spoken video recognition and readback after reload as administrator, with 25 tests passing. The test browser lacks H.264 support; playback verified with a supported video codec.
 - [x] Organize SPY into researched offers with ads, private WhatsApp flow and deliverable attachments; preserved ungrouped references, verified creation/video upload/category isolation/readback after reload as administrator, and removed temporary records and media. All 22 tests passed.
 - [x] Phase 1: secure access, profiles and team invitations implemented.
 - [x] Phase 1: dark/light layout and module navigation verified.
