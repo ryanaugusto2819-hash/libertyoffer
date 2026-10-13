@@ -1,4 +1,5 @@
 # DR Control
+- [ ] Organize SPY into researched offers with ads, private WhatsApp flow and deliverable attachments; preserve existing references and verify persistence.
 - [x] Phase 1: secure access, profiles and team invitations implemented.
 - [x] Phase 1: dark/light layout and module navigation verified.
 - [x] Phase 1: offer creation, editing and archiving implemented.
