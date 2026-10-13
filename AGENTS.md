@@ -13,3 +13,7 @@
 - Business writes use validated authenticated server functions or transactional database RPCs with role checks; client state never grants privileges.
 - Authentication is invitation-only; initial administrator assignment is an explicit trusted provisioning operation, never first-user signup or editable metadata.
 - Files use a private Cloud bucket with entity-aware access policies and signed preview/download URLs; demand item versions are append-only.
+- Workspace mutations refresh only affected entity groups; remaining operational modules have independent query caches to avoid global reloads.
+- Creative reviews target immutable file versions; publication records reference approved versions, keeping production, review, publication and performance states independent.
+- SPY source references are linked to demand items instead of copying storage objects, preserving private attachments and their provenance.
+- Financial records retain original currency and optional explicit conversion pairs; metric aggregation never combines currencies implicitly.
