@@ -911,6 +911,11 @@ export type Database = {
         }
         Returns: undefined
       }
+      traffic_can_read_file: { Args: { _file: string }; Returns: boolean }
+      valid_final_file: {
+        Args: { _file: string; _item: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "editor" | "spy" | "traffic"

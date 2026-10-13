@@ -57,6 +57,20 @@
       "when": 1791913765426,
       "tag": "0007_extend_file_entities_and_publication_events",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791918689638,
+      "tag": "0008_enforce_version_publication_and_scoped_classification",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1791918948897,
+      "tag": "0009_remove_recursive_private_file_policies",
+      "breakpoints": true
     }
   ]
 }
