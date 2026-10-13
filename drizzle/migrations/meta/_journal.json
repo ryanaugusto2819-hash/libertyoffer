@@ -71,6 +71,13 @@
       "when": 1791918948897,
       "tag": "0009_remove_recursive_private_file_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791919663126,
+      "tag": "0010_spy_offer_workspace",
+      "breakpoints": true
     }
   ]
 }

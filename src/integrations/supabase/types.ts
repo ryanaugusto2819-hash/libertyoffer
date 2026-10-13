@@ -287,6 +287,8 @@ export type Database = {
           purpose: string
           size_bytes: number
           spy_id: string | null
+          spy_offer_id: string | null
+          spy_section: string
           uploaded_by: string
         }
         Insert: {
@@ -302,6 +304,8 @@ export type Database = {
           purpose: string
           size_bytes: number
           spy_id?: string | null
+          spy_offer_id?: string | null
+          spy_section?: string
           uploaded_by?: string
         }
         Update: {
@@ -317,6 +321,8 @@ export type Database = {
           purpose?: string
           size_bytes?: number
           spy_id?: string | null
+          spy_offer_id?: string | null
+          spy_section?: string
           uploaded_by?: string
         }
         Relationships: [
@@ -353,6 +359,13 @@ export type Database = {
             columns: ["spy_id"]
             isOneToOne: false
             referencedRelation: "spy_references"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "files_spy_offer_id_fkey"
+            columns: ["spy_offer_id"]
+            isOneToOne: false
+            referencedRelation: "spy_offers"
             referencedColumns: ["id"]
           },
           {
@@ -728,6 +741,62 @@ export type Database = {
           },
         ]
       }
+      spy_offers: {
+        Row: {
+          archived: boolean
+          country: string
+          created_at: string
+          created_by: string
+          id: string
+          language: string
+          library_url: string
+          name: string
+          niche: string
+          notes: string
+          product: string
+          sales_url: string
+          whatsapp_url: string
+        }
+        Insert: {
+          archived?: boolean
+          country?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          language?: string
+          library_url?: string
+          name: string
+          niche?: string
+          notes?: string
+          product?: string
+          sales_url?: string
+          whatsapp_url?: string
+        }
+        Update: {
+          archived?: boolean
+          country?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          language?: string
+          library_url?: string
+          name?: string
+          niche?: string
+          notes?: string
+          product?: string
+          sales_url?: string
+          whatsapp_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spy_offers_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       spy_references: {
         Row: {
           archived: boolean
@@ -748,6 +817,7 @@ export type Database = {
           original_url: string
           platform: string
           product: string
+          spy_offer_id: string | null
           tags: string[]
         }
         Insert: {
@@ -769,6 +839,7 @@ export type Database = {
           original_url?: string
           platform?: string
           product?: string
+          spy_offer_id?: string | null
           tags?: string[]
         }
         Update: {
@@ -790,6 +861,7 @@ export type Database = {
           original_url?: string
           platform?: string
           product?: string
+          spy_offer_id?: string | null
           tags?: string[]
         }
         Relationships: [
@@ -805,6 +877,13 @@ export type Database = {
             columns: ["offer_id"]
             isOneToOne: false
             referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spy_references_spy_offer_id_fkey"
+            columns: ["spy_offer_id"]
+            isOneToOne: false
+            referencedRelation: "spy_offers"
             referencedColumns: ["id"]
           },
         ]
