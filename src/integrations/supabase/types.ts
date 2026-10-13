@@ -711,6 +711,30 @@ export type Database = {
           },
         ]
       }
+      spy_ai_access_state: {
+        Row: {
+          error_status: number
+          message: string
+          service: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          error_status: number
+          message: string
+          service: string
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          error_status?: number
+          message?: string
+          service?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       spy_favorites: {
         Row: {
           reference_id: string
