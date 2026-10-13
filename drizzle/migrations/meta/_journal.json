@@ -43,6 +43,13 @@
       "when": 1791913100236,
       "tag": "0005_deprecate_item_reference_url",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791913725498,
+      "tag": "0006_complete_operational_modules",
+      "breakpoints": true
     }
   ]
 }

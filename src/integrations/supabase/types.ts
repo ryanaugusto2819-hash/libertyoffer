@@ -49,6 +49,48 @@ export type Database = {
           },
         ]
       }
+      creative_reviews: {
+        Row: {
+          created_at: string
+          decision: string
+          id: string
+          notes: string
+          reviewer_id: string
+          version_id: string
+        }
+        Insert: {
+          created_at?: string
+          decision: string
+          id?: string
+          notes?: string
+          reviewer_id?: string
+          version_id: string
+        }
+        Update: {
+          created_at?: string
+          decision?: string
+          id?: string
+          notes?: string
+          reviewer_id?: string
+          version_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "creative_reviews_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "creative_reviews_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "creative_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       creative_versions: {
         Row: {
           created_at: string
@@ -112,7 +154,9 @@ export type Database = {
           item_number: number
           language: string
           name: string
+          performance_status: string
           reference_url: string
+          source_spy_id: string | null
           status: string
         }
         Insert: {
@@ -128,7 +172,9 @@ export type Database = {
           item_number: number
           language?: string
           name: string
+          performance_status?: string
           reference_url?: string
+          source_spy_id?: string | null
           status?: string
         }
         Update: {
@@ -144,7 +190,9 @@ export type Database = {
           item_number?: number
           language?: string
           name?: string
+          performance_status?: string
           reference_url?: string
+          source_spy_id?: string | null
           status?: string
         }
         Relationships: [
@@ -160,6 +208,13 @@ export type Database = {
             columns: ["demand_id"]
             isOneToOne: false
             referencedRelation: "demands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "demand_items_source_spy_id_fkey"
+            columns: ["source_spy_id"]
+            isOneToOne: false
+            referencedRelation: "spy_references"
             referencedColumns: ["id"]
           },
         ]
@@ -228,8 +283,10 @@ export type Database = {
           name: string
           offer_id: string | null
           path: string
+          profile_id: string | null
           purpose: string
           size_bytes: number
+          spy_id: string | null
           uploaded_by: string
         }
         Insert: {
@@ -241,8 +298,10 @@ export type Database = {
           name: string
           offer_id?: string | null
           path: string
+          profile_id?: string | null
           purpose: string
           size_bytes: number
+          spy_id?: string | null
           uploaded_by?: string
         }
         Update: {
@@ -254,8 +313,10 @@ export type Database = {
           name?: string
           offer_id?: string | null
           path?: string
+          profile_id?: string | null
           purpose?: string
           size_bytes?: number
+          spy_id?: string | null
           uploaded_by?: string
         }
         Relationships: [
@@ -278,6 +339,20 @@ export type Database = {
             columns: ["offer_id"]
             isOneToOne: false
             referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "files_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "files_spy_id_fkey"
+            columns: ["spy_id"]
+            isOneToOne: false
+            referencedRelation: "spy_references"
             referencedColumns: ["id"]
           },
           {
@@ -324,6 +399,54 @@ export type Database = {
             columns: ["item_id"]
             isOneToOne: false
             referencedRelation: "demand_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string
+          created_at: string
+          event_key: string | null
+          id: string
+          item_id: string | null
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          event_key?: string | null
+          id?: string
+          item_id?: string | null
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          event_key?: string | null
+          id?: string
+          item_id?: string | null
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "demand_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -415,6 +538,91 @@ export type Database = {
           },
         ]
       }
+      performance_daily: {
+        Row: {
+          ad_spend: number
+          archived: boolean
+          conversion_currency: string | null
+          conversion_rate: number | null
+          created_at: string
+          created_by: string
+          currency: string
+          date: string
+          delivery_cost: number
+          id: string
+          item_id: string | null
+          leads: number
+          offer_id: string
+          orders: number
+          other_cost: number
+          payment_fees: number
+          product_cost: number
+          revenue: number
+        }
+        Insert: {
+          ad_spend?: number
+          archived?: boolean
+          conversion_currency?: string | null
+          conversion_rate?: number | null
+          created_at?: string
+          created_by?: string
+          currency: string
+          date: string
+          delivery_cost?: number
+          id?: string
+          item_id?: string | null
+          leads?: number
+          offer_id: string
+          orders?: number
+          other_cost?: number
+          payment_fees?: number
+          product_cost?: number
+          revenue?: number
+        }
+        Update: {
+          ad_spend?: number
+          archived?: boolean
+          conversion_currency?: string | null
+          conversion_rate?: number | null
+          created_at?: string
+          created_by?: string
+          currency?: string
+          date?: string
+          delivery_cost?: number
+          id?: string
+          item_id?: string | null
+          leads?: number
+          offer_id?: string
+          orders?: number
+          other_cost?: number
+          payment_fees?: number
+          product_cost?: number
+          revenue?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "performance_daily_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "performance_daily_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "demand_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "performance_daily_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_path: string | null
@@ -435,6 +643,171 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      publications: {
+        Row: {
+          ad_id: string
+          ad_set: string
+          ad_url: string
+          campaign: string
+          created_at: string
+          created_by: string
+          id: string
+          published_at: string
+          status: string
+          version_id: string
+        }
+        Insert: {
+          ad_id?: string
+          ad_set?: string
+          ad_url?: string
+          campaign?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          published_at?: string
+          status?: string
+          version_id: string
+        }
+        Update: {
+          ad_id?: string
+          ad_set?: string
+          ad_url?: string
+          campaign?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          published_at?: string
+          status?: string
+          version_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "publications_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "publications_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "creative_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spy_favorites: {
+        Row: {
+          reference_id: string
+          user_id: string
+        }
+        Insert: {
+          reference_id: string
+          user_id?: string
+        }
+        Update: {
+          reference_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spy_favorites_reference_id_fkey"
+            columns: ["reference_id"]
+            isOneToOne: false
+            referencedRelation: "spy_references"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spy_favorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spy_references: {
+        Row: {
+          archived: boolean
+          captured_at: string
+          copy: string
+          country: string
+          created_at: string
+          created_by: string
+          cta: string
+          hook: string
+          id: string
+          language: string
+          library_url: string
+          name: string
+          niche: string
+          notes: string
+          offer_id: string | null
+          original_url: string
+          platform: string
+          product: string
+          tags: string[]
+        }
+        Insert: {
+          archived?: boolean
+          captured_at?: string
+          copy?: string
+          country?: string
+          created_at?: string
+          created_by?: string
+          cta?: string
+          hook?: string
+          id?: string
+          language?: string
+          library_url?: string
+          name: string
+          niche?: string
+          notes?: string
+          offer_id?: string | null
+          original_url?: string
+          platform?: string
+          product?: string
+          tags?: string[]
+        }
+        Update: {
+          archived?: boolean
+          captured_at?: string
+          copy?: string
+          country?: string
+          created_at?: string
+          created_by?: string
+          cta?: string
+          hook?: string
+          id?: string
+          language?: string
+          library_url?: string
+          name?: string
+          niche?: string
+          notes?: string
+          offer_id?: string | null
+          original_url?: string
+          platform?: string
+          product?: string
+          tags?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spy_references_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spy_references_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       team_invitations: {
         Row: {
@@ -516,6 +889,11 @@ export type Database = {
         Returns: boolean
       }
       is_member: { Args: never; Returns: boolean }
+      refresh_deadline_notifications: { Args: never; Returns: undefined }
+      review_creative: {
+        Args: { observation: string; target_version: string; verdict: string }
+        Returns: undefined
+      }
       set_member_roles: {
         Args: {
           new_roles: Database["public"]["Enums"]["app_role"][]
