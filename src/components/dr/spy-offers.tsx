@@ -47,7 +47,7 @@ function SpyOfferForm({ open, setOpen, offer }: { open: boolean; setOpen: (v: bo
     </form>
   </Modal>;
 }
-function ResearchCover({ file }: { file?: ReturnType<typeof useWorkspace>['files'][number] }) {
+function ResearchCover({ file }: { file: ReturnType<typeof useWorkspace>['files'][number] | undefined }) {
   const getUrl = useServerFn(fileUrl);
   const q = useQuery({ queryKey: ['file-url', file?.id], enabled: !!file, queryFn: () => file ? getUrl({ data: { id: file.id, download: false } }) : Promise.resolve(null), staleTime: 480000 });
   if (q.data && file?.mime_type.startsWith('image')) return <img className="offer-image" src={q.data} alt="Anúncio da oferta pesquisada" />;
