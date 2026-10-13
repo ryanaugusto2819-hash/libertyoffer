@@ -1,0 +1,3 @@
+import type { QueryClient } from '@tanstack/react-query';
+import { getWorkspace,type Workspace } from './dr.functions';
+export async function refreshWorkspace(qc:QueryClient,scope:'offers'|'production'|'team'|'files'|'profile'='production'){const next=await getWorkspace({data:{scope}});qc.setQueryData<Workspace>(['workspace'],old=>old?{...old,...(scope==='offers'?{offers:next.offers}:scope==='team'?{profiles:next.profiles,roles:next.roles,invitations:next.invitations}:scope==='profile'?{profiles:next.profiles}:scope==='files'?{files:next.files,versions:next.versions}:{demands:next.demands,items:next.items,comments:next.comments,files:next.files,versions:next.versions})}:next);void qc.invalidateQueries({queryKey:['operations','notifications']});}
