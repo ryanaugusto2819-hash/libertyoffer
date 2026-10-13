@@ -1,0 +1,12 @@
+import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
+import { useServerFn } from '@tanstack/react-start';
+import { useQueryClient } from '@tanstack/react-query';
+import { Bell,CheckCheck } from 'lucide-react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { readNotification } from '@/lib/operations.functions';
+import { useOperations } from './operations-data';
+import { useWorkspace } from './workspace';
+import { Modal,Empty,errorMessage } from './common';
+export function Notifications(){const q=useOperations('notifications');const qc=useQueryClient();const read=useServerFn(readNotification);const w=useWorkspace();const [open,setOpen]=useState(false);const count=q.data?.notifications.filter(n=>!n.read_at).length??0;async function mark(id?:string){try{await read({data:{id}});await qc.invalidateQueries({queryKey:['operations','notifications']});}catch(e){toast.error(errorMessage(e));}}return <><Button size="icon" variant="ghost" title={`Notificações · ${count} não lidas`} onClick={()=>setOpen(true)} className="relative"><Bell/>{count>0&&<span className="absolute -top-1 -right-1 text-[9px] bg-primary text-primary-foreground rounded-full min-w-4 h-4 grid place-items-center">{count}</span>}</Button><Modal open={open} onOpenChange={setOpen} title="Notificações"><div className="flex justify-end"><Button variant="outline" size="sm" onClick={()=>mark()}><CheckCheck/>Marcar todas como lidas</Button></div>{q.isError?<Empty title="Não foi possível carregar notificações"/>:!q.data?.notifications.length?<Empty title="Nenhuma notificação"/>:q.data.notifications.map(n=>{const i=w.items.find(i=>i.id===n.item_id);return <div key={n.id} className="file-row"><div><strong className={!n.read_at?'text-primary':''}>{n.title}</strong><p>{n.body}</p><small>{new Date(n.created_at).toLocaleString('pt-BR')}</small>{i&&<Button variant="link" size="sm" asChild><Link to="/demandas/$id" params={{id:i.demand_id}} onClick={()=>{void mark(n.id);setOpen(false);}}>Abrir demanda</Link></Button>}</div>{!n.read_at&&<Button variant="ghost" size="icon" title="Marcar como lida" onClick={()=>mark(n.id)}><CheckCheck/></Button>}</div>;})}</Modal></>;}
