@@ -1,7 +1,9 @@
 import { describe,it,expect } from 'vitest';
-import { financialMetrics,performanceSchema,reviewSchema,publicationSchema,spyOfferSchema,spySectionSchema,spySchema } from './operations-schemas';
+import { financialMetrics,performanceSchema,reviewSchema,publicationSchema,spyOfferSchema,spySectionSchema,spySchema,spyOfferStatusSchema,isSpyResearchOffer } from './operations-schemas';
 const row={currency:'BRL',ad_spend:100,revenue:400,orders:10,leads:20,product_cost:50,delivery_cost:20,payment_fees:10,other_cost:20};
 describe('SPY offer workspace',()=>{
+ it('Em Teste is an accepted persisted status',()=>{expect(spyOfferStatusSchema.parse({id:'00000000-0000-4000-8000-000000000001',status:'Em teste'}).status).toBe('Em teste');expect(spyOfferStatusSchema.safeParse({id:'00000000-0000-4000-8000-000000000001',status:'invalid'}).success).toBe(false);});
+ it('promoted offers leave SPY while unpromoted offers stay',()=>{expect(isSpyResearchOffer({operational_offer_id:'00000000-0000-4000-8000-000000000001'})).toBe(false);expect(isSpyResearchOffer({operational_offer_id:null})).toBe(true);});
  it('a researched offer must have a name before saving',()=>expect(spyOfferSchema.safeParse({name:'   '}).success).toBe(false));
  it('WhatsApp flow has its own file category',()=>{expect(spySectionSchema.parse('whatsapp_flow')).toBe('whatsapp_flow');expect(spySectionSchema.safeParse('whatsapp').success).toBe(false);});
  it('deliverables have their own file category',()=>{expect(spySectionSchema.parse('deliverables')).toBe('deliverables');expect(spySectionSchema.safeParse('other').success).toBe(false);});

@@ -777,8 +777,10 @@ export type Database = {
           name: string
           niche: string
           notes: string
+          operational_offer_id: string | null
           product: string
           sales_url: string
+          status: string
           whatsapp_url: string
         }
         Insert: {
@@ -792,8 +794,10 @@ export type Database = {
           name: string
           niche?: string
           notes?: string
+          operational_offer_id?: string | null
           product?: string
           sales_url?: string
+          status?: string
           whatsapp_url?: string
         }
         Update: {
@@ -807,8 +811,10 @@ export type Database = {
           name?: string
           niche?: string
           notes?: string
+          operational_offer_id?: string | null
           product?: string
           sales_url?: string
+          status?: string
           whatsapp_url?: string
         }
         Relationships: [
@@ -817,6 +823,13 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spy_offers_operational_offer_id_fkey"
+            columns: ["operational_offer_id"]
+            isOneToOne: true
+            referencedRelation: "offers"
             referencedColumns: ["id"]
           },
         ]
@@ -1054,6 +1067,10 @@ export type Database = {
           target: string
         }
         Returns: undefined
+      }
+      set_spy_offer_status: {
+        Args: { new_status: string; target_spy: string }
+        Returns: string
       }
       traffic_can_read_file: { Args: { _file: string }; Returns: boolean }
       valid_final_file: {
