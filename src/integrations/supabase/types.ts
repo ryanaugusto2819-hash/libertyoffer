@@ -711,6 +711,30 @@ export type Database = {
           },
         ]
       }
+      spy_ai_access_state: {
+        Row: {
+          error_status: number
+          message: string
+          service: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          error_status: number
+          message: string
+          service: string
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          error_status?: number
+          message?: string
+          service?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       spy_favorites: {
         Row: {
           reference_id: string
@@ -884,6 +908,47 @@ export type Database = {
             columns: ["spy_offer_id"]
             isOneToOne: false
             referencedRelation: "spy_offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spy_transcriptions: {
+        Row: {
+          error: string | null
+          error_status: number | null
+          file_id: string
+          run_id: string | null
+          started_at: string
+          status: string
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          error?: string | null
+          error_status?: number | null
+          file_id: string
+          run_id?: string | null
+          started_at?: string
+          status?: string
+          text?: string
+          updated_at?: string
+        }
+        Update: {
+          error?: string | null
+          error_status?: number | null
+          file_id?: string
+          run_id?: string | null
+          started_at?: string
+          status?: string
+          text?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spy_transcriptions_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: true
+            referencedRelation: "files"
             referencedColumns: ["id"]
           },
         ]

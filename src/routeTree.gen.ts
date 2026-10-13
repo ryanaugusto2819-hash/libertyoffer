@@ -30,6 +30,7 @@ import { Route as AuthenticatedOfertasIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedOfertasIdRouteImport } from './routes/_authenticated/ofertas.$id'
 import { Route as AuthenticatedSpyIndexRouteImport } from './routes/_authenticated/spy.index'
 import { Route as AuthenticatedSpyIdRouteImport } from './routes/_authenticated/spy.$id'
+import { Route as ApiSpyTranscriptionIdRouteImport } from './routes/api/spy-transcription/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -139,6 +140,11 @@ const AuthenticatedSpyIdRoute = AuthenticatedSpyIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AuthenticatedSpyRoute,
 } as any)
+const ApiSpyTranscriptionIdRoute = ApiSpyTranscriptionIdRouteImport.update({
+  id: '/api/spy-transcription/$id',
+  path: '/api/spy-transcription/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -158,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/ofertas/$id': typeof AuthenticatedOfertasIdRoute
   '/spy/$id': typeof AuthenticatedSpyIdRoute
+  '/api/spy-transcription/$id': typeof ApiSpyTranscriptionIdRoute
   '/demandas/': typeof AuthenticatedDemandasIndexRoute
   '/ofertas/': typeof AuthenticatedOfertasIndexRoute
   '/spy/': typeof AuthenticatedSpyIndexRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/ofertas/$id': typeof AuthenticatedOfertasIdRoute
   '/spy/$id': typeof AuthenticatedSpyIdRoute
+  '/api/spy-transcription/$id': typeof ApiSpyTranscriptionIdRoute
   '/demandas': typeof AuthenticatedDemandasIndexRoute
   '/ofertas': typeof AuthenticatedOfertasIndexRoute
   '/spy': typeof AuthenticatedSpyIndexRoute
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/_authenticated/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/_authenticated/ofertas/$id': typeof AuthenticatedOfertasIdRoute
   '/_authenticated/spy/$id': typeof AuthenticatedSpyIdRoute
+  '/api/spy-transcription/$id': typeof ApiSpyTranscriptionIdRoute
   '/_authenticated/demandas/': typeof AuthenticatedDemandasIndexRoute
   '/_authenticated/ofertas/': typeof AuthenticatedOfertasIndexRoute
   '/_authenticated/spy/': typeof AuthenticatedSpyIndexRoute
@@ -225,6 +234,7 @@ export interface FileRouteTypes {
     | '/demandas/$id'
     | '/ofertas/$id'
     | '/spy/$id'
+    | '/api/spy-transcription/$id'
     | '/demandas/'
     | '/ofertas/'
     | '/spy/'
@@ -244,6 +254,7 @@ export interface FileRouteTypes {
     | '/demandas/$id'
     | '/ofertas/$id'
     | '/spy/$id'
+    | '/api/spy-transcription/$id'
     | '/demandas'
     | '/ofertas'
     | '/spy'
@@ -267,6 +278,7 @@ export interface FileRouteTypes {
     | '/_authenticated/demandas/$id'
     | '/_authenticated/ofertas/$id'
     | '/_authenticated/spy/$id'
+    | '/api/spy-transcription/$id'
     | '/_authenticated/demandas/'
     | '/_authenticated/ofertas/'
     | '/_authenticated/spy/'
@@ -277,6 +289,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiSpyTranscriptionIdRoute: typeof ApiSpyTranscriptionIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -428,6 +441,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSpyIdRouteImport
       parentRoute: typeof AuthenticatedSpyRoute
     }
+    '/api/spy-transcription/$id': {
+      id: '/api/spy-transcription/$id'
+      path: '/api/spy-transcription/$id'
+      fullPath: '/api/spy-transcription/$id'
+      preLoaderRoute: typeof ApiSpyTranscriptionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -508,6 +528,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiSpyTranscriptionIdRoute: ApiSpyTranscriptionIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

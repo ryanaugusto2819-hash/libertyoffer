@@ -78,6 +78,20 @@
       "when": 1791919663126,
       "tag": "0010_spy_offer_workspace",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1791920484817,
+      "tag": "0011_spy_video_transcripts",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791920514218,
+      "tag": "0012_spy_ai_access_state",
+      "breakpoints": true
     }
   ]
 }
