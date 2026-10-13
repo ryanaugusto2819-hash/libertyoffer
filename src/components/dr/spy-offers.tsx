@@ -7,12 +7,14 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { saveSpyOffer } from '@/lib/operations.functions';
-import { spyOfferSchema } from '@/lib/operations-schemas';
+import { saveSpyOffer, setSpyOfferStatus } from '@/lib/operations.functions';
+import { spyOfferSchema, isSpyResearchOffer } from '@/lib/operations-schemas';
+import { offerStatuses } from '@/lib/dr-schemas';
+import { refreshWorkspace } from '@/lib/workspace-refresh';
 import { fileUrl } from '@/lib/dr.functions';
 import { useWorkspace, useIsAdmin } from './workspace';
 import { useOperations } from './operations-data';
-import { PageHeader, Empty, Modal, Field, errorMessage } from './common';
+import { PageHeader, Empty, Modal, Field, Status, errorMessage } from './common';
 import { SpyAds } from './spy';
 import { FilePanel } from './uploads';
 
@@ -21,6 +23,14 @@ type SpyOffer = typeof blank & { id?: string };
 function useCanWrite() {
   const w = useWorkspace();
   return useIsAdmin() || w.roles.some(r => r.user_id === w.userId && r.role === 'spy');
+}
+function SpyStatusControl({offer}:{offer:NonNullable<ReturnType<typeof useOperations>['data']>['spyOffers'][number]}) {
+  const canWrite=useCanWrite(); const save=useServerFn(setSpyOfferStatus); const qc=useQueryClient(); const navigate=useNavigate(); const [busy,setBusy]=useState(false);
+  return <div className="flex flex-wrap items-center gap-2 mt-3"><Status value={offer.status}/>{canWrite && <select className="min-w-0 flex-1" aria-label={`Status de ${offer.name}`} value={offer.status} disabled={busy || !!offer.operational_offer_id} onChange={async e=>{
+    const status=e.target.value as typeof offerStatuses[number];
+    if(status==='Em teste'&&!window.confirm('Mover esta oferta para Ofertas com o status Em Teste? Os anúncios e anexos serão preservados.'))return;
+    setBusy(true); try {const result=await save({data:{id:offer.id,status}}); await Promise.all([qc.invalidateQueries({queryKey:['operations','spy']}),result.offerId?refreshWorkspace(qc,'offers'):Promise.resolve()]); toast.success(result.offerId?'Oferta movida para Ofertas · Em Teste':'Status atualizado'); if(result.offerId)await navigate({to:'/ofertas/$id',params:{id:result.offerId}});}catch(error){toast.error(errorMessage(error));}finally{setBusy(false);}
+  }}>{offerStatuses.map(status=><option key={status} value={status}>{status==='Em teste'?'Em Teste':status}</option>)}</select>}</div>;
 }
 function SpyOfferForm({ open, setOpen, offer }: { open: boolean; setOpen: (v: boolean) => void; offer?: SpyOffer }) {
   const [form, setForm] = useState<SpyOffer>(offer ?? blank);
@@ -47,7 +57,7 @@ function SpyOfferForm({ open, setOpen, offer }: { open: boolean; setOpen: (v: bo
     </form>
   </Modal>;
 }
-function ResearchCover({ file }: { file: ReturnType<typeof useWorkspace>['files'][number] | undefined }) {
+export function ResearchCover({ file }: { file: ReturnType<typeof useWorkspace>['files'][number] | undefined }) {
   const getUrl = useServerFn(fileUrl);
   const q = useQuery({ queryKey: ['file-url', file?.id], enabled: !!file, queryFn: () => file ? getUrl({ data: { id: file.id, download: false } }) : Promise.resolve(null), staleTime: 480000 });
   if (q.data && file?.mime_type.startsWith('image')) return <img className="offer-image" src={q.data} alt="Anúncio da oferta pesquisada" />;
@@ -57,7 +67,7 @@ function ResearchCover({ file }: { file: ReturnType<typeof useWorkspace>['files'
 export function SpyOffers() {
   const q = useOperations('spy'); const w = useWorkspace(); const canWrite = useCanWrite();
   const [open, setOpen] = useState(false); const [search, setSearch] = useState(''); const [archived, setArchived] = useState(false); const [legacy, setLegacy] = useState(false);
-  const offers = (q.data?.spyOffers ?? []).filter(o => o.archived === archived && `${o.name} ${o.product} ${o.niche} ${o.country}`.toLowerCase().includes(search.toLowerCase()));
+  const offers = (q.data?.spyOffers ?? []).filter(o => isSpyResearchOffer(o) && o.archived === archived && `${o.name} ${o.product} ${o.niche} ${o.country}`.toLowerCase().includes(search.toLowerCase()));
   const ungrouped = q.data?.spy.filter(r => !r.spy_offer_id && !r.archived).length ?? 0;
   return <>
     <PageHeader eyebrow="PESQUISA" title="Central de SPY" actions={canWrite && <Button onClick={() => setOpen(true)}><Plus />Nova oferta</Button>} />
@@ -66,7 +76,7 @@ export function SpyOffers() {
     {q.isError ? <Empty title="Não foi possível carregar as ofertas" description={q.error.message} /> : q.isPending ? <Empty title="Carregando ofertas…" /> : !offers.length ? <Empty title="Nenhuma oferta encontrada" action={canWrite && <Button onClick={() => setOpen(true)}><Plus />Nova oferta</Button>} /> : <div className="offer-grid">{offers.map(o => {
       const ads = q.data?.spy.filter(r => r.spy_offer_id === o.id && !r.archived) ?? [];
       const cover = w.files.find(f => ads.some(r => r.id === f.spy_id) && (f.mime_type.startsWith('image') || f.mime_type.startsWith('video')));
-      return <Link className="offer-card" key={o.id} to="/spy/$id" params={{ id: o.id }}><ResearchCover file={cover} /><div className="offer-card-body"><div className="flex justify-between gap-2"><h3 className="break-words min-w-0">{o.name}</h3><ArrowUpRight size={16} className="shrink-0" /></div><p>{o.country || '—'} · {o.niche || o.product || '—'}</p><div className="offer-card-footer"><span>{ads.length} anúncios</span><span>{w.files.filter(f => f.spy_offer_id === o.id).length} arquivos</span></div></div></Link>;
+      return <article className="offer-card" key={o.id}><Link to="/spy/$id" params={{id:o.id}} className="block"><ResearchCover file={cover}/></Link><div className="offer-card-body"><Link to="/spy/$id" params={{id:o.id}} className="flex justify-between gap-2"><h3 className="break-words min-w-0">{o.name}</h3><ArrowUpRight size={16} className="shrink-0"/></Link><p>{o.country||'—'} · {o.niche||o.product||'—'}</p><SpyStatusControl offer={o}/><div className="offer-card-footer"><span>{ads.length} anúncios</span><span>{w.files.filter(f=>f.spy_offer_id===o.id).length} arquivos</span></div></div></article>;
     })}</div>}
     <SpyOfferForm open={open} setOpen={setOpen} />
     <Modal open={legacy} onOpenChange={setLegacy} title="Anúncios não agrupados"><SpyAds ungrouped /></Modal>
@@ -79,6 +89,7 @@ export function SpyOfferDetail({ id }: { id: string }) {
   if (q.isPending) return <Empty title="Carregando oferta…" />;
   if (q.isError) return <Empty title="Não foi possível carregar a oferta" description={q.error.message} />;
   if (!offer) return <Empty title="Oferta SPY não encontrada" />;
+  if (offer.operational_offer_id) return <Empty title="Oferta em operação" action={<Link to="/ofertas/$id" params={{id:offer.operational_offer_id}}>Abrir em Ofertas →</Link>}/>;
   const tabs = ['Informações', 'Anúncios', 'Fluxo do WhatsApp', 'Entregáveis'];
   return <>
     <Link to="/spy" className="back-link">← Central de SPY</Link>
@@ -86,6 +97,7 @@ export function SpyOfferDetail({ id }: { id: string }) {
       if (!window.confirm(offer.archived ? 'Restaurar esta oferta SPY?' : 'Arquivar esta oferta SPY?')) return;
       setBusy(true); try { await save({ data: spyOfferSchema.parse({ ...offer, archived: !offer.archived }) }); await qc.invalidateQueries({ queryKey: ['operations', 'spy'] }); toast.success(offer.archived ? 'Oferta restaurada' : 'Oferta arquivada'); } catch (e) { toast.error(errorMessage(e)); } finally { setBusy(false); }
     }}><Archive /></Button></>} />
+    <div className="mb-4 max-w-sm"><SpyStatusControl offer={offer}/></div>
     <div className="tabs-bar">{tabs.map(t => <Button variant="ghost" key={t} className={tab === t ? 'tab-active' : ''} onClick={() => setTab(t)}>{t}</Button>)}</div>
     {tab === 'Informações' ? <section className="settings-section"><h2>Informações da oferta</h2><dl className="details-list"><div><dt>Produto</dt><dd>{offer.product || '—'}</dd></div><div><dt>Nicho</dt><dd>{offer.niche || '—'}</dd></div><div><dt>País</dt><dd>{offer.country || '—'}</dd></div><div><dt>Idioma</dt><dd>{offer.language}</dd></div></dl><div className="link-list">{[['Biblioteca de anúncios', offer.library_url], ['Página de vendas', offer.sales_url], ['WhatsApp', offer.whatsapp_url]].map(([label, url]) => url && <a key={label} href={url} target="_blank" rel="noreferrer">{label}<ExternalLink size={16} /></a>)}</div><h3>Observações</h3><p className="muted whitespace-pre-wrap">{offer.notes || 'Nenhuma observação.'}</p></section> : tab === 'Anúncios' ? <SpyAds spyOfferId={id} /> : <section className="settings-section"><h2>{tab}</h2><FilePanel key={tab} spy_offer_id={id} spy_section={tab === 'Fluxo do WhatsApp' ? 'whatsapp_flow' : 'deliverables'} label={tab} editable={canWrite} /></section>}
     <SpyOfferForm key={offer.id} open={edit} setOpen={setEdit} offer={offer} />
