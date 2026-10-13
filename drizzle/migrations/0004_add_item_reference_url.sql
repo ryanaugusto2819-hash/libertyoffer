@@ -1,0 +1,7 @@
+ALTER TABLE public.demand_items ADD COLUMN reference_url text NOT NULL DEFAULT '';
+
+CREATE OR REPLACE FUNCTION public.create_demand(payload jsonb)
+ RETURNS uuid
+ LANGUAGE plpgsql
+ SET search_path TO 'public'
+AS $function$ DECLARE demand_uuid uuid; item jsonb; n integer:=0; BEGIN IF NOT public.has_role(auth.uid(),'admin') THEN RAISE EXCEPTION 'Apenas administradores podem criar demandas'; END IF; IF jsonb_array_length(payload->'items')<1 OR jsonb_array_length(payload->'items')>100 THEN RAISE EXCEPTION 'Informe entre 1 e 100 criativos'; END IF; IF payload->>'kind'='individual' AND jsonb_array_length(payload->'items')<>1 THEN RAISE EXCEPTION 'Uma demanda individual deve conter um criativo'; END IF; INSERT INTO public.demands(title,offer_id,kind,briefing,priority,due_date) VALUES(payload->>'title',(payload->>'offer_id')::uuid,payload->>'kind',coalesce(payload->>'briefing',''),payload->>'priority',nullif(payload->>'due_date','')::date) RETURNING id INTO demand_uuid; FOR item IN SELECT * FROM jsonb_array_elements(payload->'items') LOOP n:=n+1; INSERT INTO public.demand_items(demand_id,name,item_number,assigned_to,hook,copy,instructions,format,language,due_date,reference_url) VALUES(demand_uuid,item->>'name',n,nullif(item->>'assigned_to','')::uuid,coalesce(item->>'hook',''),coalesce(item->>'copy',''),coalesce(item->>'instructions',''),coalesce(item->>'format','9:16'),coalesce(item->>'language','Português'),nullif(item->>'due_date','')::date,coalesce(item->>'reference_url','')); END LOOP; RETURN demand_uuid; END $function$;
