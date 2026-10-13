@@ -1,4 +1,4 @@
-import { Spy } from './spy';
+import { SpyAds as Spy } from './spy';
 import { Creatives } from './creatives';
 import { Performance } from './performance';
 import { refreshWorkspace } from '@/lib/workspace-refresh';
