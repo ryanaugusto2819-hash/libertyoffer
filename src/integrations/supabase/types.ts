@@ -112,6 +112,7 @@ export type Database = {
           item_number: number
           language: string
           name: string
+          reference_url: string
           status: string
         }
         Insert: {
@@ -127,6 +128,7 @@ export type Database = {
           item_number: number
           language?: string
           name: string
+          reference_url?: string
           status?: string
         }
         Update: {
@@ -142,6 +144,7 @@ export type Database = {
           item_number?: number
           language?: string
           name?: string
+          reference_url?: string
           status?: string
         }
         Relationships: [
