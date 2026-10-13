@@ -1,6 +1,12 @@
 import { describe,it,expect } from 'vitest';
-import { financialMetrics,performanceSchema,reviewSchema,publicationSchema } from './operations-schemas';
+import { financialMetrics,performanceSchema,reviewSchema,publicationSchema,spyOfferSchema,spySectionSchema,spySchema } from './operations-schemas';
 const row={currency:'BRL',ad_spend:100,revenue:400,orders:10,leads:20,product_cost:50,delivery_cost:20,payment_fees:10,other_cost:20};
+describe('SPY offer workspace',()=>{
+ it('a researched offer must have a name before saving',()=>expect(spyOfferSchema.safeParse({name:'   '}).success).toBe(false));
+ it('WhatsApp flow has its own file category',()=>{expect(spySectionSchema.parse('whatsapp_flow')).toBe('whatsapp_flow');expect(spySectionSchema.safeParse('whatsapp').success).toBe(false);});
+ it('deliverables have their own file category',()=>{expect(spySectionSchema.parse('deliverables')).toBe('deliverables');expect(spySectionSchema.safeParse('other').success).toBe(false);});
+ it('ads retain their researched offer association',()=>{const id='00000000-0000-4000-8000-000000000001';const parsed=spySchema.parse({name:'Ad',platform:'Meta',copy:'',hook:'',cta:'',country:'',language:'Português',niche:'',product:'',offer_id:null,spy_offer_id:id,captured_at:'2026-10-13',notes:'',tags:[]});expect(parsed.spy_offer_id).toBe(id);});
+});
 describe('Financial operating rules',()=>{
  it('ROAS is revenue divided by advertising spend',()=>expect(financialMetrics([row],'BRL').roas).toBe(4));
  it('ROI is profit divided by total investment times one hundred',()=>expect(financialMetrics([row],'BRL').roi).toBe(100));

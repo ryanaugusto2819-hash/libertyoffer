@@ -28,6 +28,8 @@ import { Route as AuthenticatedDemandasIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedDemandasIdRouteImport } from './routes/_authenticated/demandas.$id'
 import { Route as AuthenticatedOfertasIndexRouteImport } from './routes/_authenticated/ofertas.index'
 import { Route as AuthenticatedOfertasIdRouteImport } from './routes/_authenticated/ofertas.$id'
+import { Route as AuthenticatedSpyIndexRouteImport } from './routes/_authenticated/spy.index'
+import { Route as AuthenticatedSpyIdRouteImport } from './routes/_authenticated/spy.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -127,6 +129,16 @@ const AuthenticatedOfertasIdRoute = AuthenticatedOfertasIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AuthenticatedOfertasRoute,
 } as any)
+const AuthenticatedSpyIndexRoute = AuthenticatedSpyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedSpyRoute,
+} as any)
+const AuthenticatedSpyIdRoute = AuthenticatedSpyIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedSpyRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -142,11 +154,13 @@ export interface FileRoutesByFullPath {
   '/performance': typeof AuthenticatedPerformanceRoute
   '/producao': typeof AuthenticatedProducaoRoute
   '/publicacao': typeof AuthenticatedPublicacaoRoute
-  '/spy': typeof AuthenticatedSpyRoute
+  '/spy': typeof AuthenticatedSpyRouteWithChildren
   '/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/ofertas/$id': typeof AuthenticatedOfertasIdRoute
+  '/spy/$id': typeof AuthenticatedSpyIdRoute
   '/demandas/': typeof AuthenticatedDemandasIndexRoute
   '/ofertas/': typeof AuthenticatedOfertasIndexRoute
+  '/spy/': typeof AuthenticatedSpyIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -160,11 +174,12 @@ export interface FileRoutesByTo {
   '/performance': typeof AuthenticatedPerformanceRoute
   '/producao': typeof AuthenticatedProducaoRoute
   '/publicacao': typeof AuthenticatedPublicacaoRoute
-  '/spy': typeof AuthenticatedSpyRoute
   '/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/ofertas/$id': typeof AuthenticatedOfertasIdRoute
+  '/spy/$id': typeof AuthenticatedSpyIdRoute
   '/demandas': typeof AuthenticatedDemandasIndexRoute
   '/ofertas': typeof AuthenticatedOfertasIndexRoute
+  '/spy': typeof AuthenticatedSpyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -182,11 +197,13 @@ export interface FileRoutesById {
   '/_authenticated/performance': typeof AuthenticatedPerformanceRoute
   '/_authenticated/producao': typeof AuthenticatedProducaoRoute
   '/_authenticated/publicacao': typeof AuthenticatedPublicacaoRoute
-  '/_authenticated/spy': typeof AuthenticatedSpyRoute
+  '/_authenticated/spy': typeof AuthenticatedSpyRouteWithChildren
   '/_authenticated/demandas/$id': typeof AuthenticatedDemandasIdRoute
   '/_authenticated/ofertas/$id': typeof AuthenticatedOfertasIdRoute
+  '/_authenticated/spy/$id': typeof AuthenticatedSpyIdRoute
   '/_authenticated/demandas/': typeof AuthenticatedDemandasIndexRoute
   '/_authenticated/ofertas/': typeof AuthenticatedOfertasIndexRoute
+  '/_authenticated/spy/': typeof AuthenticatedSpyIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -207,8 +224,10 @@ export interface FileRouteTypes {
     | '/spy'
     | '/demandas/$id'
     | '/ofertas/$id'
+    | '/spy/$id'
     | '/demandas/'
     | '/ofertas/'
+    | '/spy/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -222,11 +241,12 @@ export interface FileRouteTypes {
     | '/performance'
     | '/producao'
     | '/publicacao'
-    | '/spy'
     | '/demandas/$id'
     | '/ofertas/$id'
+    | '/spy/$id'
     | '/demandas'
     | '/ofertas'
+    | '/spy'
   id:
     | '__root__'
     | '/'
@@ -246,8 +266,10 @@ export interface FileRouteTypes {
     | '/_authenticated/spy'
     | '/_authenticated/demandas/$id'
     | '/_authenticated/ofertas/$id'
+    | '/_authenticated/spy/$id'
     | '/_authenticated/demandas/'
     | '/_authenticated/ofertas/'
+    | '/_authenticated/spy/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -392,6 +414,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOfertasIdRouteImport
       parentRoute: typeof AuthenticatedOfertasRoute
     }
+    '/_authenticated/spy/': {
+      id: '/_authenticated/spy/'
+      path: '/'
+      fullPath: '/spy/'
+      preLoaderRoute: typeof AuthenticatedSpyIndexRouteImport
+      parentRoute: typeof AuthenticatedSpyRoute
+    }
+    '/_authenticated/spy/$id': {
+      id: '/_authenticated/spy/$id'
+      path: '/$id'
+      fullPath: '/spy/$id'
+      preLoaderRoute: typeof AuthenticatedSpyIdRouteImport
+      parentRoute: typeof AuthenticatedSpyRoute
+    }
   }
 }
 
@@ -423,6 +459,19 @@ const AuthenticatedOfertasRouteChildren: AuthenticatedOfertasRouteChildren = {
 const AuthenticatedOfertasRouteWithChildren =
   AuthenticatedOfertasRoute._addFileChildren(AuthenticatedOfertasRouteChildren)
 
+interface AuthenticatedSpyRouteChildren {
+  AuthenticatedSpyIdRoute: typeof AuthenticatedSpyIdRoute
+  AuthenticatedSpyIndexRoute: typeof AuthenticatedSpyIndexRoute
+}
+
+const AuthenticatedSpyRouteChildren: AuthenticatedSpyRouteChildren = {
+  AuthenticatedSpyIdRoute: AuthenticatedSpyIdRoute,
+  AuthenticatedSpyIndexRoute: AuthenticatedSpyIndexRoute,
+}
+
+const AuthenticatedSpyRouteWithChildren =
+  AuthenticatedSpyRoute._addFileChildren(AuthenticatedSpyRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAprovacoesRoute: typeof AuthenticatedAprovacoesRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
@@ -434,7 +483,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPerformanceRoute: typeof AuthenticatedPerformanceRoute
   AuthenticatedProducaoRoute: typeof AuthenticatedProducaoRoute
   AuthenticatedPublicacaoRoute: typeof AuthenticatedPublicacaoRoute
-  AuthenticatedSpyRoute: typeof AuthenticatedSpyRoute
+  AuthenticatedSpyRoute: typeof AuthenticatedSpyRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -448,7 +497,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPerformanceRoute: AuthenticatedPerformanceRoute,
   AuthenticatedProducaoRoute: AuthenticatedProducaoRoute,
   AuthenticatedPublicacaoRoute: AuthenticatedPublicacaoRoute,
-  AuthenticatedSpyRoute: AuthenticatedSpyRoute,
+  AuthenticatedSpyRoute: AuthenticatedSpyRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
