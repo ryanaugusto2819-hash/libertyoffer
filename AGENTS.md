@@ -16,6 +16,7 @@
 - Workspace mutations refresh only affected entity groups; remaining operational modules have independent query caches to avoid global reloads.
 - Creative reviews target immutable file versions; publication records reference approved versions, keeping production, review, publication and performance states independent.
 - SPY source references are linked to demand items instead of copying storage objects, preserving private attachments and their provenance.
+- Researched SPY offers are separate from operational offers; ads link to their researched offer and categorized private attachments reuse the entity-scoped file pipeline to avoid mixing competitor research with production.
 - Financial records retain original currency and optional explicit conversion pairs; metric aggregation never combines currencies implicitly.
 
 - Account appearance persists on the current device; private avatar files use profile-scoped uploads and signed URLs.
