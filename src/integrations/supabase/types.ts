@@ -888,6 +888,47 @@ export type Database = {
           },
         ]
       }
+      spy_transcriptions: {
+        Row: {
+          error: string | null
+          error_status: number | null
+          file_id: string
+          run_id: string | null
+          started_at: string
+          status: string
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          error?: string | null
+          error_status?: number | null
+          file_id: string
+          run_id?: string | null
+          started_at?: string
+          status?: string
+          text?: string
+          updated_at?: string
+        }
+        Update: {
+          error?: string | null
+          error_status?: number | null
+          file_id?: string
+          run_id?: string | null
+          started_at?: string
+          status?: string
+          text?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spy_transcriptions_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: true
+            referencedRelation: "files"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_invitations: {
         Row: {
           accepted_at: string | null
