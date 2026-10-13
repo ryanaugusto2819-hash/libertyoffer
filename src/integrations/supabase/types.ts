@@ -881,6 +881,16 @@ export type Database = {
       }
       can_read_demand: { Args: { _id: string }; Returns: boolean }
       create_demand: { Args: { payload: Json }; Returns: string }
+      create_from_spy: {
+        Args: {
+          demand_title: string
+          existing_demand?: string
+          reference_ids: string[]
+          target_editor?: string
+          target_offer: string
+        }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
