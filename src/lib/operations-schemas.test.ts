@@ -1,5 +1,5 @@
 import { describe,it,expect } from 'vitest';
-import { financialMetrics,performanceSchema } from './operations-schemas';
+import { financialMetrics,performanceSchema,reviewSchema,publicationSchema } from './operations-schemas';
 const row={currency:'BRL',ad_spend:100,revenue:400,orders:10,leads:20,product_cost:50,delivery_cost:20,payment_fees:10,other_cost:20};
 describe('Financial operating rules',()=>{
  it('ROAS is revenue divided by advertising spend',()=>expect(financialMetrics([row],'BRL').roas).toBe(4));
@@ -11,4 +11,9 @@ describe('Financial operating rules',()=>{
  it('different currencies are not added without an explicit conversion',()=>expect(financialMetrics([row,{...row,currency:'USD'}],'BRL').revenue).toBe(400));
  it('stored conversion rate is applied to all monetary values',()=>{const m=financialMetrics([{...row,currency:'USD',conversion_currency:'BRL',conversion_rate:5}],'BRL');expect(m.revenue).toBe(2000);expect(m.investment).toBe(1000);});
  it('conversion requires both a currency and a positive rate',()=>{const data={...row,offer_id:'00000000-0000-4000-8000-000000000001',item_id:null,date:'2026-10-13',conversion_currency:'USD',conversion_rate:null};expect(performanceSchema.safeParse(data).success).toBe(false);});
+});
+describe('Version workflow validation',()=>{
+ it('adjustment requests must include observations',()=>expect(reviewSchema.safeParse({version_id:'00000000-0000-4000-8000-000000000001',decision:'Ajustes solicitados',notes:'   '}).success).toBe(false));
+ it('reviews target a specific persisted version',()=>expect(reviewSchema.safeParse({version_id:'',decision:'Aprovado',notes:''}).success).toBe(false));
+ it('publications must reference a persisted version',()=>expect(publicationSchema.safeParse({version_id:'',ad_id:'123',ad_url:'',campaign:'Campanha',ad_set:'',published_at:'2026-10-13',status:'Publicado'}).success).toBe(false));
 });
