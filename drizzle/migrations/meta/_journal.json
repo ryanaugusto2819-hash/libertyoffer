@@ -92,6 +92,13 @@
       "when": 1791920514218,
       "tag": "0012_spy_ai_access_state",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1791921209770,
+      "tag": "0013_spy_offer_status_promotion",
+      "breakpoints": true
     }
   ]
 }
