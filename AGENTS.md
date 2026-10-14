@@ -19,6 +19,7 @@
 - Researched SPY offers retain provenance through a unique operational destination; a role-checked transactional trigger promotes them, linking ads without copying private files. Operational pages resolve source research and categorized attachments through that association.
 - Financial records retain original currency and optional explicit conversion pairs; metric aggregation never combines currencies implicitly.
 - Operational and unpromoted SPY offer deletion is admin-only, exact-name confirmed, and performed by database transactions that remove dependent records before deleting the offer; this prevents partial business-data deletion.
+- Operational creative deletion is admin-only, exact-name confirmed, and transactional across every dependent workflow record; this prevents orphaned publications, metrics, reviews and private files.
 
 - Account appearance persists on the current device; private avatar files use profile-scoped uploads and signed URLs.
 - SPY video transcription uses a bearer-authenticated streaming server route, entity-scoped file reads and per-file cached results with atomic claims; this prevents private-file exposure and duplicate AI charges. Durable service access blocks stop denied or credit-blocked calls across reloads.
