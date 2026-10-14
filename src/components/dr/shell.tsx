@@ -7,7 +7,7 @@ import { LayoutDashboard, Layers3, Clapperboard, ClipboardList, ScanEye, CheckCh
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import type { ReactNode } from 'react';
-import { useWorkspace } from './workspace';
+import { useWorkspace } from './workspace-context';
 export const nav=[{name:'Dashboard',path:'/dashboard',icon:LayoutDashboard},{name:'Ofertas',path:'/ofertas',icon:Layers3},{name:'Demandas',path:'/demandas',icon:ClipboardList},{name:'Central de SPY',path:'/spy',icon:ScanEye},{name:'Criativos',path:'/criativos',icon:Clapperboard},{name:'Produção',path:'/producao',icon:Clapperboard},{name:'Aprovações',path:'/aprovacoes',icon:CheckCheck},{name:'Fila de publicação',path:'/publicacao',icon:Send},{name:'Performance',path:'/performance',icon:ChartNoAxesCombined},{name:'Equipe',path:'/equipe',icon:UsersRound}] as const;
 export function Shell({children,guest=false}:{children:ReactNode,guest?:boolean}){const [collapsed,setCollapsed]=useState(false);const [search,setSearch]=useState('');const [searchOpen,setSearchOpen]=useState(false);const [light,setLight]=useState(false);const pathname=useRouterState({select:s=>s.location.pathname});const navigate=useNavigate();const qc=useQueryClient();
  useEffect(()=>{const v=localStorage.getItem('dr-theme')==='light';setLight(v);document.documentElement.classList.toggle('light',v);},[]);
