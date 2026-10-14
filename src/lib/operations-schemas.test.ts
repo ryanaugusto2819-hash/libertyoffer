@@ -8,6 +8,7 @@ describe('SPY offer workspace',()=>{
  it('permanent deletion requires the offer id and a non-empty exact-name confirmation',()=>{const id='00000000-0000-4000-8000-000000000001';expect(deleteSpyOfferSchema.parse({id,confirmation_name:'Oferta México'})).toEqual({id,confirmation_name:'Oferta México'});expect(deleteSpyOfferSchema.safeParse({id,confirmation_name:'   '}).success).toBe(false);});
  it('WhatsApp flow has its own file category',()=>{expect(spySectionSchema.parse('whatsapp_flow')).toBe('whatsapp_flow');expect(spySectionSchema.safeParse('whatsapp').success).toBe(false);});
  it('deliverables have their own file category',()=>{expect(spySectionSchema.parse('deliverables')).toBe('deliverables');expect(spySectionSchema.safeParse('other').success).toBe(false);});
+ it('AI covers have their own private file category',()=>expect(spySectionSchema.parse('cover')).toBe('cover'));
  it('ads retain their researched offer association',()=>{const id='00000000-0000-4000-8000-000000000001';const parsed=spySchema.parse({name:'Ad',platform:'Meta',copy:'',hook:'',cta:'',country:'',language:'Português',niche:'',product:'',offer_id:null,spy_offer_id:id,captured_at:'2026-10-13',notes:'',tags:[]});expect(parsed.spy_offer_id).toBe(id);});
 });
 describe('Financial operating rules',()=>{

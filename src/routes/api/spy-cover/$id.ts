@@ -1,0 +1,31 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { createClient } from '@supabase/supabase-js';
+import { z } from 'zod';
+import { generateImage, imageSettings } from '@/lib/image-gateway.server';
+import { createLovableAiGatewayRunIdFetch, getLovableAiGatewayResponseHeaders } from '@/lib/ai/run-id.server';
+
+export const Route = createFileRoute('/api/spy-cover/$id')({ server: { handlers: { POST: async ({ request, params }) => {
+  const id = z.string().uuid().safeParse(params.id);
+  if (!id.success) return Response.json({ message: 'Oferta inválida.' }, { status: 400 });
+  const body = z.object({ stream: z.boolean().default(true) }).safeParse(await request.json().catch(() => ({})));
+  if (!body.success) return Response.json({ message: 'Solicitação inválida.' }, { status: 400 });
+  const token = request.headers.get('authorization');
+  if (!token?.startsWith('Bearer ')) return Response.json({ message: 'Entre na sua conta.' }, { status: 401 });
+  const endpoint = process.env['SUPABASE_URL'];
+  const key = process.env['SUPABASE_PUBLISHABLE_KEY'];
+  if (!endpoint || !key) return Response.json({ message: 'Serviço não configurado.' }, { status: 500 });
+  const s = createClient(endpoint, key, { auth: { persistSession: false, autoRefreshToken: false }, global: { headers: { Authorization: token }, fetch: (input, init) => { const headers = new Headers(init?.headers); headers.set('apikey', key); return fetch(input, { ...init, headers }); } } });
+  const auth = await s.auth.getUser(token.slice(7));
+  if (auth.error || !auth.data.user) return Response.json({ message: 'Sessão inválida.' }, { status: 401 });
+  const roles = await Promise.all(['admin', 'spy'].map(role => s.rpc('has_role', { _user_id: auth.data.user.id, _role: role })));
+  if (!roles.some(result => result.data === true)) return Response.json({ message: 'Sem permissão para gerar capas.' }, { status: 403 });
+  const offer = await s.from('spy_offers').select('name,product,niche,country,language,notes,operational_offer_id').eq('id', id.data).single();
+  if (offer.error || !offer.data || offer.data.operational_offer_id) return Response.json({ message: 'Oferta SPY não encontrada.' }, { status: 404 });
+  const apiKey = process.env['LOVABLE_API_KEY'];
+  if (!apiKey) return Response.json({ message: 'A chave de IA não está configurada.' }, { status: 401 });
+  const details = offer.data;
+  const prompt = `Create a premium editorial advertising cover image for a direct-response marketing research library. Subject: ${details.product || details.name}. Market niche: ${details.niche || 'general consumer product'}. Country: ${details.country || 'not specified'}. Language context: ${details.language || 'Portuguese'}. Notes for visual context: ${details.notes || 'none'}. Use a polished commercial product-photography style, strong focal point, realistic materials, clean intentional composition, dramatic but natural studio lighting, dark neutral background with a restrained warm orange accent. Landscape 3:2 composition with safe center framing for responsive card crops. No text, no letters, no logos, no watermarks, no interface elements, no charts.`;
+  const run = createLovableAiGatewayRunIdFetch();
+  const upstream = await generateImage({ ...imageSettings, apiKey, fetch: run.fetch }, prompt, body.data.stream);
+  return new Response(upstream.body, { status: upstream.status, headers: getLovableAiGatewayResponseHeaders(upstream.headers, { 'Content-Type': upstream.headers.get('Content-Type') ?? 'application/json', 'Cache-Control': 'no-cache, no-transform' }) });
+} } } });
