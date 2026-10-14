@@ -99,6 +99,13 @@
       "when": 1791921209770,
       "tag": "0013_spy_offer_status_promotion",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1791996825260,
+      "tag": "0014_delete_operational_offer",
+      "breakpoints": true
     }
   ]
 }
