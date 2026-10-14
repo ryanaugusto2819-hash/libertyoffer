@@ -1048,6 +1048,10 @@ export type Database = {
         }
         Returns: string
       }
+      delete_offer_creative: {
+        Args: { confirmation_name: string; target_item: string }
+        Returns: string[]
+      }
       delete_operational_offer: {
         Args: { confirmation_name: string; target_offer: string }
         Returns: string[]
