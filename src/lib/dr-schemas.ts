@@ -13,9 +13,8 @@ export const offerSchema = z.object({id:uuid.optional(),name:text(160).min(1,'In
 export const itemSchema = z.object({name:text(200).min(1,'Informe o nome do criativo'),assigned_to:optionalId,hook:text(1000).default(''),copy:text(10000).default(''),instructions:text(5000).default(''),format:text(30).default('9:16'),language:text(100).default('Português'),due_date:date});
 export const demandSchema = z.object({title:text(200).min(1,'Informe o título'),offer_id:uuid,kind:z.enum(['individual','batch']),briefing:text(10000).default(''),priority:z.enum(priorities),due_date:date,items:z.array(itemSchema).min(1).max(100)}).refine(v=>v.kind!=='individual'||v.items.length===1,'Uma demanda individual deve ter um criativo');
 export const inviteSchema = z.object({email:z.string().trim().email().max(255),display_name:text(100).min(1),roles:z.array(z.enum(roles)).min(1),origin:z.string().url()});
-export const MAX_FILE_SIZE = 20*1024*1024;
 export const extensions = ['mp4','mov','jpg','jpeg','png','webp','pdf','txt','docx'];
-export function validateFile(name:string,size:number){if(!extensions.includes(name.split('.').pop()?.toLowerCase()??'')) throw new Error('Formato não permitido. Use MP4, MOV, JPG, PNG, WEBP, PDF, TXT ou DOCX.'); if(size<=0||size>MAX_FILE_SIZE) throw new Error('O arquivo deve ter no máximo 20 MB.');}
+export function validateFile(name:string,size:number){if(!extensions.includes(name.split('.').pop()?.toLowerCase()??'')) throw new Error('Formato não permitido. Use MP4, MOV, JPG, PNG, WEBP, PDF, TXT ou DOCX.'); if(size<=0) throw new Error('O arquivo não pode estar vazio.');}
 export function batchProgress(items: {status:string}[]){return items.length?Math.round(items.filter(i=>i.status==='Aprovado').length/items.length*100):0;}
 export type OfferInput=z.input<typeof offerSchema>;
 export type ItemInput=z.input<typeof itemSchema>;
