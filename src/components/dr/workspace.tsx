@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
-import { getWorkspace, type Workspace } from '@/lib/dr.functions';
+import { getWorkspace } from '@/lib/dr.functions';
 import { LoaderCircle, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
