@@ -1052,6 +1052,10 @@ export type Database = {
         Args: { confirmation_name: string; target_offer: string }
         Returns: string[]
       }
+      delete_spy_offer: {
+        Args: { confirmation_name: string; target_spy_offer: string }
+        Returns: string[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
