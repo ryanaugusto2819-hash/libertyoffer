@@ -1,4 +1,5 @@
 # LibertyOffer
+- [x] Add manual AI cover generation for SPY offers, storing completed images privately and showing them on cards and offer details.
 - [x] Add permanent Central de SPY offer deletion for administrators with exact-name confirmation and transactional cleanup of ads, transcriptions and private files.
 - [x] Add permanent operational offer deletion for administrators with exact-name confirmation and transactional cleanup of linked production, publication, financial and file records.
 - [x] Add persisted SPY offer statuses and transfer to Ofertas on Em Teste; verified administrator UI promotion, stored authenticated ownership, one linked ad and both categorized private attachments after reload, disappearance from SPY, and 26 passing tests. Removed temporary application records; separate-role permission suite remains blocked below.
