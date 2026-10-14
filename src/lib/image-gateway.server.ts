@@ -3,6 +3,7 @@ export type ImageConfig = {
   apiKey: string;
   model: string;
   format: 'openai';
+  fetch?: typeof fetch;
 };
 
 export const imageSettings: Omit<ImageConfig, 'apiKey'> = {
@@ -12,7 +13,7 @@ export const imageSettings: Omit<ImageConfig, 'apiKey'> = {
 };
 
 export function generateImage(config: ImageConfig, prompt: string, stream = true) {
-  return fetch(`${config.baseURL}/v1/images/generations`, {
+  return (config.fetch ?? fetch)(`${config.baseURL}/v1/images/generations`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${config.apiKey}`,

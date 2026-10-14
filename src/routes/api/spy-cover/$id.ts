@@ -26,6 +26,6 @@ export const Route = createFileRoute('/api/spy-cover/$id')({ server: { handlers:
   const details = offer.data;
   const prompt = `Create a premium editorial advertising cover image for a direct-response marketing research library. Subject: ${details.product || details.name}. Market niche: ${details.niche || 'general consumer product'}. Country: ${details.country || 'not specified'}. Language context: ${details.language || 'Portuguese'}. Notes for visual context: ${details.notes || 'none'}. Use a polished commercial product-photography style, strong focal point, realistic materials, clean intentional composition, dramatic but natural studio lighting, dark neutral background with a restrained warm orange accent. Landscape 3:2 composition with safe center framing for responsive card crops. No text, no letters, no logos, no watermarks, no interface elements, no charts.`;
   const run = createLovableAiGatewayRunIdFetch();
-  const upstream = await generateImage({ ...imageSettings, apiKey }, prompt, body.data.stream);
+  const upstream = await generateImage({ ...imageSettings, apiKey, fetch: run.fetch }, prompt, body.data.stream);
   return new Response(upstream.body, { status: upstream.status, headers: getLovableAiGatewayResponseHeaders(upstream.headers, { 'Content-Type': upstream.headers.get('Content-Type') ?? 'application/json', 'Cache-Control': 'no-cache, no-transform' }) });
 } } } });
