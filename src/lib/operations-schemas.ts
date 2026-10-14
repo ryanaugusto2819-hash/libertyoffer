@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { offerStatuses } from './dr-schemas';
 export const spyOfferStatusSchema=z.object({id:z.string().uuid(),status:z.enum(offerStatuses)});
+export const deleteSpyOfferSchema=z.object({id:z.string().uuid(),confirmation_name:z.string().trim().min(1).max(160)});
 export function isSpyResearchOffer(offer:{operational_offer_id?:string|null}){return !offer.operational_offer_id;}
 export const currencies=['BRL','USD','MXN','ARS','ZAR'] as const;
 const url=z.union([z.literal(''),z.string().url().refine(v=>/^https?:\/\//.test(v))]).default('');

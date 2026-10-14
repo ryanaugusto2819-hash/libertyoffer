@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Plus, Search, ArrowUpRight, Archive, Pencil, Layers3, ExternalLink } from 'lucide-react';
+import { Plus, Search, ArrowUpRight, Archive, Pencil, Layers3, ExternalLink, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { saveSpyOffer, setSpyOfferStatus } from '@/lib/operations.functions';
+import { deleteSpyOffer, saveSpyOffer, setSpyOfferStatus } from '@/lib/operations.functions';
 import { spyOfferSchema, isSpyResearchOffer } from '@/lib/operations-schemas';
 import { offerStatuses } from '@/lib/dr-schemas';
 import { refreshWorkspace } from '@/lib/workspace-refresh';
@@ -17,6 +17,7 @@ import { useOperations } from './operations-data';
 import { PageHeader, Empty, Modal, Field, Status, errorMessage } from './common';
 import { SpyAds } from './spy';
 import { FilePanel } from './uploads';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 const blank = { name: '', product: '', niche: '', country: '', language: 'Português', library_url: '', sales_url: '', whatsapp_url: '', notes: '', archived: false };
 type SpyOffer = typeof blank & { id?: string };
@@ -83,8 +84,8 @@ export function SpyOffers() {
   </>;
 }
 export function SpyOfferDetail({ id }: { id: string }) {
-  const q = useOperations('spy'); const canWrite = useCanWrite(); const qc = useQueryClient(); const save = useServerFn(saveSpyOffer);
-  const [tab, setTab] = useState('Informações'); const [edit, setEdit] = useState(false); const [busy, setBusy] = useState(false);
+  const q = useOperations('spy'); const canWrite = useCanWrite(); const admin = useIsAdmin(); const qc = useQueryClient(); const save = useServerFn(saveSpyOffer); const remove = useServerFn(deleteSpyOffer); const navigate = useNavigate();
+  const [tab, setTab] = useState('Informações'); const [edit, setEdit] = useState(false); const [busy, setBusy] = useState(false); const [deleteOpen,setDeleteOpen]=useState(false); const [confirmation,setConfirmation]=useState(''); const [deleting,setDeleting]=useState(false);
   const offer = q.data?.spyOffers.find(o => o.id === id);
   if (q.isPending) return <Empty title="Carregando oferta…" />;
   if (q.isError) return <Empty title="Não foi possível carregar a oferta" description={q.error.message} />;
@@ -96,10 +97,11 @@ export function SpyOfferDetail({ id }: { id: string }) {
     <PageHeader title={offer.name} subtitle={`${offer.country || '—'} · ${offer.language} · ${offer.niche || 'Sem nicho'}`} actions={canWrite && <><Button variant="outline" onClick={() => setEdit(true)}><Pencil />Editar</Button><Button variant="ghost" size="icon" title={offer.archived ? 'Restaurar oferta' : 'Arquivar oferta'} disabled={busy} onClick={async () => {
       if (!window.confirm(offer.archived ? 'Restaurar esta oferta SPY?' : 'Arquivar esta oferta SPY?')) return;
       setBusy(true); try { await save({ data: spyOfferSchema.parse({ ...offer, archived: !offer.archived }) }); await qc.invalidateQueries({ queryKey: ['operations', 'spy'] }); toast.success(offer.archived ? 'Oferta restaurada' : 'Oferta arquivada'); } catch (e) { toast.error(errorMessage(e)); } finally { setBusy(false); }
-    }}><Archive /></Button></>} />
+    }}><Archive /></Button>{admin&&<Button variant="ghost" size="icon" title="Excluir oferta SPY" aria-label="Excluir oferta SPY" onClick={()=>setDeleteOpen(true)}><Trash2/></Button>}</>} />
     <div className="mb-4 max-w-sm"><SpyStatusControl offer={offer}/></div>
     <div className="tabs-bar">{tabs.map(t => <Button variant="ghost" key={t} className={tab === t ? 'tab-active' : ''} onClick={() => setTab(t)}>{t}</Button>)}</div>
     {tab === 'Informações' ? <section className="settings-section"><h2>Informações da oferta</h2><dl className="details-list"><div><dt>Produto</dt><dd>{offer.product || '—'}</dd></div><div><dt>Nicho</dt><dd>{offer.niche || '—'}</dd></div><div><dt>País</dt><dd>{offer.country || '—'}</dd></div><div><dt>Idioma</dt><dd>{offer.language}</dd></div></dl><div className="link-list">{[['Biblioteca de anúncios', offer.library_url], ['Página de vendas', offer.sales_url], ['WhatsApp', offer.whatsapp_url]].map(([label, url]) => url && <a key={label} href={url} target="_blank" rel="noreferrer">{label}<ExternalLink size={16} /></a>)}</div><h3>Observações</h3><p className="muted whitespace-pre-wrap">{offer.notes || 'Nenhuma observação.'}</p></section> : tab === 'Anúncios' ? <SpyAds spyOfferId={id} /> : <section className="settings-section"><h2>{tab}</h2><FilePanel key={tab} spy_offer_id={id} spy_section={tab === 'Fluxo do WhatsApp' ? 'whatsapp_flow' : 'deliverables'} label={tab} editable={canWrite} /></section>}
     <SpyOfferForm key={offer.id} open={edit} setOpen={setEdit} offer={offer} />
+    <AlertDialog open={deleteOpen} onOpenChange={open=>{setDeleteOpen(open);if(!open)setConfirmation('');}}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Excluir oferta da Central de SPY?</AlertDialogTitle><AlertDialogDescription>Esta ação excluirá permanentemente a oferta pesquisada, os anúncios, as transcrições e todos os arquivos anexados. Digite <strong>{offer.name}</strong> para confirmar.</AlertDialogDescription></AlertDialogHeader><Input aria-label="Nome da oferta SPY para confirmar exclusão" value={confirmation} onChange={e=>setConfirmation(e.target.value)} placeholder={offer.name}/><AlertDialogFooter><AlertDialogCancel disabled={deleting}>Cancelar</AlertDialogCancel><AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" disabled={deleting||confirmation!==offer.name} onClick={async e=>{e.preventDefault();setDeleting(true);try{const result=await remove({data:{id,confirmation_name:confirmation}});await Promise.all([qc.invalidateQueries({queryKey:['operations','spy']}),refreshWorkspace(qc,'files')]);toast.success(result.storageCleanupPending?'Oferta excluída; alguns arquivos aguardam limpeza':'Oferta SPY excluída permanentemente');setDeleteOpen(false);await navigate({to:'/spy'});}catch(error){toast.error(errorMessage(error));}finally{setDeleting(false);}}}>{deleting?'Excluindo…':'Excluir permanentemente'}</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
   </>;
 }
