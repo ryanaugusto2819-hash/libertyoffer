@@ -134,6 +134,13 @@
       "when": 1791999957503,
       "tag": "0018_remove_file_size_cap",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792000277200,
+      "tag": "0019_delete_offer_creative",
+      "breakpoints": true
     }
   ]
 }

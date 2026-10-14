@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { z } from 'zod';
 import { spySectionSchema } from './operations-schemas';
-import { offerSchema, demandSchema, inviteSchema, itemSchema, itemStatuses, validateFile } from './dr-schemas';
+import { offerSchema, demandSchema, deleteCreativeSchema, inviteSchema, itemSchema, itemStatuses, validateFile } from './dr-schemas';
 
 export const getWorkspace = createServerFn({method:'GET'}).middleware([requireSupabaseAuth]).inputValidator(v=>z.object({scope:z.enum(['all','offers','production','team','files','profile']).default('all')}).parse(v??{})).handler(async({data,context})=>{
  const s=context.supabase;
@@ -21,6 +21,13 @@ export const saveOffer=createServerFn({method:'POST'}).middleware([requireSupaba
 export const archiveOffer=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(v=>z.object({id:z.string().uuid(),archived:z.boolean()}).parse(v)).handler(async({data,context})=>{const r=await context.supabase.from('offers').update({archived:data.archived}).eq('id',data.id).select('id').single();if(r.error)throw new Error(r.error.message);return r.data;});
 export const deleteOffer=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(v=>z.object({id:z.string().uuid(),confirmation_name:z.string().min(1).max(160)}).parse(v)).handler(async({data,context})=>{
  const {data:paths,error}=await context.supabase.rpc('delete_operational_offer',{target_offer:data.id,confirmation_name:data.confirmation_name});
+ if(error)throw new Error(error.message);
+ const failed:string[]=[];
+ for(const path of paths??[]){const removed=await context.supabase.storage.from('dr-files').remove([path]);if(removed.error)failed.push(path);}
+ return {ok:true,storageCleanupPending:failed.length};
+});
+export const deleteCreative=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(v=>deleteCreativeSchema.parse(v)).handler(async({data,context})=>{
+ const {data:paths,error}=await context.supabase.rpc('delete_offer_creative',{target_item:data.id,confirmation_name:data.confirmation_name});
  if(error)throw new Error(error.message);
  const failed:string[]=[];
  for(const path of paths??[]){const removed=await context.supabase.storage.from('dr-files').remove([path]);if(removed.error)failed.push(path);}

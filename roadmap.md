@@ -1,4 +1,5 @@
 # LibertyOffer
+- [x] Add permanent per-ad deletion from an offer, restricted to administrators with exact-name confirmation and transactional cleanup of linked versions, reviews, publications, performance, notifications, comments and private files.
 - [x] Add manual creative creation from an offer Anúncios tab, including details, assignment and a private first version.
 - [x] Add manual AI cover generation for SPY offers, storing completed images privately and showing them on cards and offer details.
 - [x] Add permanent Central de SPY offer deletion for administrators with exact-name confirmation and transactional cleanup of ads, transcriptions and private files.
