@@ -1048,6 +1048,7 @@ export type Database = {
         }
         Returns: string
       }
+      delete_file: { Args: { target_file: string }; Returns: string }
       delete_offer_creative: {
         Args: { confirmation_name: string; target_item: string }
         Returns: string[]
