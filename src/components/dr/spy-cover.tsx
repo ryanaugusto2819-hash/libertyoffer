@@ -23,7 +23,7 @@ async function dataUrlToFile(dataUrl: string, name: string) {
   return new File([blob], name, { type: blob.type || 'image/png' });
 }
 
-export function SpyCoverGenerator({ offerId, offerName, current, onSaved }: { offerId: string; offerName: string; current?: CoverFile; onSaved: () => Promise<unknown> }) {
+export function SpyCoverGenerator({ offerId, offerName, current, onSaved }: { offerId: string; offerName: string; current: CoverFile | undefined; onSaved: () => Promise<unknown> }) {
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState('');
   const [final, setFinal] = useState(false);
