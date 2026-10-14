@@ -1,4 +1,5 @@
 # LibertyOffer
+- [x] Add permanent operational offer deletion for administrators with exact-name confirmation and transactional cleanup of linked production, publication, financial and file records.
 - [x] Add persisted SPY offer statuses and transfer to Ofertas on Em Teste; verified administrator UI promotion, stored authenticated ownership, one linked ad and both categorized private attachments after reload, disappearance from SPY, and 26 passing tests. Removed temporary application records; separate-role permission suite remains blocked below.
 - [x] Simplify SPY ad reference fields, show video playback, and automatically persist private AI video transcriptions; verified spoken video recognition and readback after reload as administrator, with 25 tests passing. The test browser lacks H.264 support; playback verified with a supported video codec.
 - [x] Organize SPY into researched offers with ads, private WhatsApp flow and deliverable attachments; preserved ungrouped references, verified creation/video upload/category isolation/readback after reload as administrator, and removed temporary records and media. All 22 tests passed.
