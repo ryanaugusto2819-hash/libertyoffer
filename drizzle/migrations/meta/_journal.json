@@ -120,6 +120,13 @@
       "when": 1791997585095,
       "tag": "0016_delete_spy_offer",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1791998060372,
+      "tag": "0017_add_spy_cover_file_category",
+      "breakpoints": true
     }
   ]
 }
