@@ -19,6 +19,13 @@ export const saveOffer=createServerFn({method:'POST'}).middleware([requireSupaba
  const {data:row,error}=await q.select('id').single(); if(error)throw new Error(error.message);return row;
 });
 export const archiveOffer=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(v=>z.object({id:z.string().uuid(),archived:z.boolean()}).parse(v)).handler(async({data,context})=>{const r=await context.supabase.from('offers').update({archived:data.archived}).eq('id',data.id).select('id').single();if(r.error)throw new Error(r.error.message);return r.data;});
+export const deleteOffer=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(v=>z.object({id:z.string().uuid(),confirmation_name:z.string().min(1).max(160)}).parse(v)).handler(async({data,context})=>{
+ const {data:paths,error}=await context.supabase.rpc('delete_operational_offer',{target_offer:data.id,confirmation_name:data.confirmation_name});
+ if(error)throw new Error(error.message);
+ const failed:string[]=[];
+ for(const path of paths??[]){const removed=await context.supabase.storage.from('dr-files').remove([path]);if(removed.error)failed.push(path);}
+ return {ok:true,storageCleanupPending:failed.length};
+});
 export const saveDemand=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(v=>demandSchema.parse(v)).handler(async({data,context})=>{const r=await context.supabase.rpc('create_demand',{payload:data});if(r.error)throw new Error(r.error.message);return r.data;});
 export const saveDemandInfo=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(v=>z.object({id:z.string().uuid(),title:z.string().trim().min(1).max(200),briefing:z.string().max(10000),priority:z.enum(['Baixa','Média','Alta','Urgente']),due_date:z.string()}).parse(v)).handler(async({data,context})=>{const {id,...rest}=data; const r=await context.supabase.from('demands').update({...rest,due_date:rest.due_date||null}).eq('id',id).select('id').single();if(r.error)throw new Error(r.error.message);return r.data;});
 export const updateItem=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(v=>z.object({id:z.string().uuid(),status:z.enum(itemStatuses)}).parse(v)).handler(async({data,context})=>{const r=await context.supabase.from('demand_items').update({status:data.status}).eq('id',data.id).select('id').single();if(r.error)throw new Error(r.error.message);return r.data;});
