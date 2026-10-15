@@ -8,3 +8,7 @@ export function useWorkspace(){
  if(!data)throw new Error('Workspace indisponível');
  return data;
 }
+
+export function useOptionalWorkspace(){
+ return useContext(WorkspaceContext);
+}
