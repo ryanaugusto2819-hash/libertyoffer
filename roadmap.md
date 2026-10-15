@@ -25,3 +25,4 @@
 - [ ] Verify invitation acceptance and password change with the owner — blocked: browser session does not establish ownership of the invitation email or the owner’s intended password; no password was changed during testing.- [x] Add per-file delete for attachments (reference/product): admin-only trash button in file lists with confirmation; backend RPC refuses creative versions, avatars and refuses non-admins; transcription rows cleaned with the file.
 
 - [x] Expand the Copy field everywhere: auto-growing box (300-640px, resizable) plus "Expandir" wide reading/editing dialog with character count and copy button; read-only copy views use the same expandable panel.
+- [x] Hide Dashboard, Demandas and Performance from editor-only accounts: nav + command palette filtered and direct URLs redirect to /ofertas (pure rule in src/lib/nav-access.ts with unit tests).
