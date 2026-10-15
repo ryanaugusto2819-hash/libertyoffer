@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { saveDemand,saveDemandInfo,updateItem,editItem,addItem,addComment } from '@/lib/dr.functions';
 import { demandSchema,itemSchema,itemStatuses,priorities,batchProgress,type ItemInput } from '@/lib/dr-schemas';
 import { useWorkspace,useIsAdmin } from './workspace';
-import { PageHeader,Empty,Status,Modal,Field,CopyField,errorMessage,formatDate } from './common';
+import { PageHeader,Empty,Status,Modal,Field,CopyField,CopyView,errorMessage,formatDate } from './common';
 import { FilePanel,uploadFile } from './uploads';
 import { supabase } from '@/integrations/supabase/client';
 const freshItem=():ItemInput=>({name:'',assigned_to:'',hook:'',copy:'',instructions:'',format:'9:16',language:'Português',due_date:''});
