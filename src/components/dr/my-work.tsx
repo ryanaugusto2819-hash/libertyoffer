@@ -12,7 +12,7 @@ import { useOperations } from './operations-data';
 import { PageHeader,Status,Empty,errorMessage,formatDate } from './common';
 import { ItemDetail } from './demands';
 type Review={decision:string;notes:string;created_at:string};
-function WorkCard({i,offer,demandTitle,review,onOpen}:{i:WorkItem,offer:string,demandTitle:string,review?:Review,onOpen:()=>void}){
+function WorkCard({i,offer,demandTitle,review,onOpen}:{i:WorkItem,offer:string,demandTitle:string,review?:Review|undefined,onOpen:()=>void}){
  const today=new Date().toISOString().slice(0,10);
  const late=isOverdue(i,today);
  return <button type="button" className={`work-card${late?' work-card-late':''}`} onClick={onOpen}>
