@@ -16,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { saveOffer,archiveOffer,deleteOffer,saveDemand } from '@/lib/dr.functions';
 import { offerSchema,offerStatuses,demandSchema,type OfferInput,type ItemInput } from '@/lib/dr-schemas';
 import { useWorkspace,useIsAdmin } from './workspace';
-import { PageHeader,Empty,Status,Modal,Field,errorMessage } from './common';
+import { PageHeader,Empty,Status,Modal,Field,CopyField,errorMessage } from './common';
 import { FilePanel,uploadFile } from './uploads';
 import { supabase } from '@/integrations/supabase/client';
 import { AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle } from '@/components/ui/alert-dialog';
