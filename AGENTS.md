@@ -23,6 +23,7 @@
 - Operational and unpromoted SPY offer deletion is admin-only, exact-name confirmed, and performed by database transactions that remove dependent records before deleting the offer; this prevents partial business-data deletion.
 - Operational creative deletion is admin-only, exact-name confirmed, and transactional across every dependent workflow record; this prevents orphaned publications, metrics, reviews and private files.
 
+- The "Meu trabalho" editor page is visible only to accounts holding the editor role (nav-access rules hide it from other roles and block direct URLs); review decisions must always notify the assigned editor including the reviewer's notes.
 - Account appearance persists on the current device; private avatar files use profile-scoped uploads and signed URLs.
 - SPY video transcription uses a bearer-authenticated streaming server route, entity-scoped file reads and per-file cached results with atomic claims; this prevents private-file exposure and duplicate AI charges. Durable service access blocks stop denied or credit-blocked calls across reloads.
 - SPY cover generation uses a bearer-authenticated streaming server route and saves completed images as private cover-category files; generation remains an explicit user action to control AI spend.
