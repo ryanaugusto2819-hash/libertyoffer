@@ -23,3 +23,5 @@
 - [x] Complete the app: verify administrator workflow, financial rules, notifications, saved appearance and desktop/mobile pages; removed next-phase placeholders.
 - [ ] Execute the committed editor/SPY/traffic permission transaction suite — blocked: available database connection has no trusted role-table write access. Administrator flow and RLS review completed; separate-role execution is not verified.
 - [ ] Verify invitation acceptance and password change with the owner — blocked: browser session does not establish ownership of the invitation email or the owner’s intended password; no password was changed during testing.- [x] Add per-file delete for attachments (reference/product): admin-only trash button in file lists with confirmation; backend RPC refuses creative versions, avatars and refuses non-admins; transcription rows cleaned with the file.
+
+- [x] Expand the Copy field everywhere: auto-growing box (300-640px, resizable) plus "Expandir" wide reading/editing dialog with character count and copy button; read-only copy views use the same expandable panel.
