@@ -24,6 +24,8 @@
 .copy-panel:focus{outline:none;border-color:var(--primary)}
 textarea.copy-panel{width:100%;resize:vertical;font-family:inherit;font-size:15px}
 .copy-panel::placeholder{color:var(--muted-foreground)}
+p.copy-panel{font-size:15px;line-height:1.85;color:var(--foreground)}
+p.copy-panel-wide{font-size:17px;line-height:1.9}
 .copy-panel-read{min-height:0;max-height:360px}
 .copy-panel-wide{min-height:min(58vh,620px);max-height:min(58vh,620px);font-size:17px;line-height:1.9;font-weight:450}
 .dr-modal-wide{max-width:min(1100px,94vw)!important}
