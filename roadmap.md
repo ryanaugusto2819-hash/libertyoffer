@@ -1,4 +1,5 @@
 # LibertyOffer
+- [x] Isolate creative references by item or explicit linked SPY ad, preventing empty associations from showing unrelated attachments; add regression coverage.
 - [x] Add permanent per-ad deletion from an offer, restricted to administrators with exact-name confirmation and transactional cleanup of linked versions, reviews, publications, performance, notifications, comments and private files.
 - [x] Add manual creative creation from an offer Anúncios tab, including details, assignment and a private first version.
 - [x] Add manual AI cover generation for SPY offers, storing completed images privately and showing them on cards and offer details.

@@ -17,6 +17,7 @@
 - The workspace context lives in a stable dependency-free module shared by the provider and shell; this prevents hot updates from creating mismatched context instances.
 - Creative reviews target immutable file versions; publication records reference approved versions, keeping production, review, publication and performance states independent.
 - SPY source references are linked to demand items instead of copying storage objects, preserving private attachments and their provenance.
+- Attachment panels use the shared scope matcher with a non-empty SPY source guard; null associations must never include unrelated files.
 - Researched SPY offers retain provenance through a unique operational destination; a role-checked transactional trigger promotes them, linking ads without copying private files. Operational pages resolve source research and categorized attachments through that association.
 - Financial records retain original currency and optional explicit conversion pairs; metric aggregation never combines currencies implicitly.
 - Operational and unpromoted SPY offer deletion is admin-only, exact-name confirmed, and performed by database transactions that remove dependent records before deleting the offer; this prevents partial business-data deletion.
