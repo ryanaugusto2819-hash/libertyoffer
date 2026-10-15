@@ -11,9 +11,9 @@ export function myWorkGroups(items:readonly WorkItem[],today:string):WorkGroups{
  const groups:WorkGroups={overdue:[],todo:[],waiting:[],done:[]};
  for(const i of items){
   if(i.status==='Cancelado')continue;
-  if(isOverdue(i,today))groups.overdue.push(i);
+  if(i.status==='Aguardando aprovação')groups.waiting.push(i);
+  else if(isOverdue(i,today))groups.overdue.push(i);
   else if(i.status==='Aprovado')groups.done.push(i);
-  else if(i.status==='Aguardando aprovação')groups.waiting.push(i);
   else groups.todo.push(i);
  }
  return groups;
