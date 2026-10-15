@@ -27,3 +27,4 @@
 
 - [x] Expand the Copy field everywhere: auto-growing box (300-640px, resizable) plus "Expandir" wide reading/editing dialog with character count and copy button; read-only copy views use the same expandable panel.
 - [x] Hide Dashboard, Demandas and Performance from editor-only accounts: nav + command palette filtered and direct URLs redirect to /ofertas (pure rule in src/lib/nav-access.ts with unit tests).
+- [x] Editor experience: new "Meu trabalho" page (assigned creatives grouped by late/to produce/awaiting approval/approved) with a production checklist modal showing demand briefing, hook, copy, instructions, references and final upload; review decisions now notify the assigned editor with the reviewer's notes (trigger update, migration 0021); nav item visible only to accounts with the editor role.
