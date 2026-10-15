@@ -19,10 +19,13 @@
 
 .creative-version-row{flex-wrap:wrap;align-items:flex-start;gap:12px}.creative-version-row>div:first-child{flex:1 1 240px;min-width:0}.creative-version-row strong{white-space:normal;overflow-wrap:anywhere}.creative-version-row>.creative-version-actions{display:flex;flex:0 1 auto;flex-wrap:wrap;align-items:center;gap:8px;max-width:100%}.creative-version-actions>button{flex-shrink:0}.creative-version-actions>button svg{flex-shrink:0}
 
-.copy-field-head{display:flex;align-items:center;gap:10px;min-width:0}.copy-field-head>span{font-size:11px;font-weight:500;color:var(--muted-foreground)}.copy-field-head>small{font-size:9px;color:var(--muted-foreground);margin-left:auto;white-space:nowrap}.copy-field-head>button{flex-shrink:0}
-.copy-panel{min-height:300px;max-height:min(64vh,640px);overflow:auto;padding:14px 16px;border:1px solid var(--border);border-radius:7px;background:var(--background);color:var(--foreground);line-height:1.85;font-size:13px;white-space:pre-wrap;word-break:break-word}
+.copy-field-head{display:flex;align-items:center;gap:10px;min-width:0}.copy-field-head>span{font-size:12px;font-weight:600;color:var(--foreground)}.copy-field-head>small{font-size:11px;color:var(--muted-foreground);margin-left:auto;white-space:nowrap}.copy-field-head>button{flex-shrink:0}
+.copy-panel{min-height:300px;max-height:min(64vh,640px);overflow:auto;padding:18px 20px;border:1px solid var(--border);border-radius:7px;background:var(--card);color:var(--foreground);line-height:1.85;font-size:15px;font-weight:450;white-space:pre-wrap;word-break:break-word}
 .copy-panel:focus{outline:none;border-color:var(--primary)}
-textarea.copy-panel{width:100%;resize:vertical;font-family:inherit}
-.copy-panel-read{min-height:0;max-height:340px}
-.copy-panel-wide{min-height:min(58vh,620px);max-height:min(58vh,620px);font-size:15px;line-height:1.9}
+textarea.copy-panel{width:100%;resize:vertical;font-family:inherit;font-size:15px}
+.copy-panel::placeholder{color:var(--muted-foreground)}
+p.copy-panel{font-size:15px;line-height:1.85;color:var(--foreground)}
+p.copy-panel-wide{font-size:17px;line-height:1.9}
+.copy-panel-read{min-height:0;max-height:360px}
+.copy-panel-wide{min-height:min(58vh,620px);max-height:min(58vh,620px);font-size:17px;line-height:1.9;font-weight:450}
 .dr-modal-wide{max-width:min(1100px,94vw)!important}
