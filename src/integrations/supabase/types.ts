@@ -1048,6 +1048,10 @@ export type Database = {
         }
         Returns: string
       }
+      delete_creative_version: {
+        Args: { target_version: string }
+        Returns: string
+      }
       delete_demand: {
         Args: { confirmation_name: string; target_demand: string }
         Returns: string[]
